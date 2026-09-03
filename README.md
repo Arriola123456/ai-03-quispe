@@ -112,6 +112,38 @@ Same technology, opposite conclusions, and the difference is exactly whether AI
 enters *inside* the production function of an existing task or *beside* it as
 an alternative way to produce a task that was previously infeasible.
 
+## Extension: task complexity and the verification bottleneck
+
+Above the floor. The idea came out of my ChatGPT study session (`prompts.md`,
+Session 1); the choice of curvatures and the Lean proofs are from this
+repository. Let a project have complexity $c \ge 0$: it is worth more, $R(c)$,
+but costs more to execute in both modes, and — when delegated — more to verify
+and more likely to hide an agent error. With
+
+$$T^S(c) = T^S + \tfrac{\chi}{2}c^2 + \psi c, \qquad
+  T^D(c) = T^D + \tfrac{\chi}{2}c^2 + \tfrac{\eta}{2}c^2 + \tfrac{\rho}{2}\,\tfrac{\nu}{2}c^2,$$
+
+$R(c)$ and the common curvature $\chi$ cancel in the delegation advantage:
+
+$$B(c) = B + \psi c - \tfrac{\theta}{2}c^2, \qquad \theta \equiv \eta + \tfrac{\rho\nu}{2}.$$
+
+The benchmark $\theta = 0$ (no verification bottleneck) gives $B(c) = B + \psi c$,
+strictly increasing — the conclusion is the assumption. With $\theta > 0$ the
+advantage **peaks** at $c^* = \psi/\theta$, since
+$B(c^*) - B(c) = \tfrac{\theta}{2}(c - c^*)^2$; it is strictly increasing below
+and strictly decreasing above $c^*$; it turns **negative** beyond an explicit
+$\bar c$, so for complex enough projects delegation no longer activates the
+language; and $c^*$ rises with general ability when $\eta$ and $\nu$ fall with
+$a$ — the logic of Assumption 2 in a new dimension. Prediction: newly-used
+languages should concentrate in projects of intermediate complexity.
+
+All of this is proved in Lean as extension theorems in `lean/MainTheorems.lean`
+(`reductionC_eq`, `reductionC_benchmark_strictMono`, `reductionC_le_peak`,
+`reductionC_strictMonoOn`, `reductionC_strictAntiOn`, `reductionC_neg_of_large`,
+`peak_monotone_in_ability`); the source-facing Specs were not touched, and
+`lake build` / `check --fast` were rerun (`lean/docs/CHECK_EXTENSION.txt`).
+Figure: `analysis/figures/frontier_complexity.pdf`.
+
 ## What is in this repository
 
 | File | What it is |

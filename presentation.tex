@@ -391,8 +391,39 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
   \end{itemize}
 \end{frame}
 
-%================= 12. LA IA =========================================
-\begin{frame}{12 \textperiodcentered{} Where I did not believe the AI}
+%================= 12. EXTENSION =======================================
+\begin{frame}{12 \textperiodcentered{} Extension: task complexity and the verification bottleneck}
+  \footnotesize
+  \textbf{Idea (from my ChatGPT study session).} Complexity $c\ge 0$ raises the project's value $R(c)$ and its
+  execution cost in both modes --- and, when delegated, the cost of \emph{verifying} the agent. $R(c)$ and the
+  common curvature $\chi$ cancel in $B$:
+  \vspace{-2pt}
+  \[
+    T^S(c)=T^S+\tfrac{\chi}{2}c^2+\psi c,\quad
+    T^D(c)=T^D+\tfrac{\chi}{2}c^2+\tfrac{\eta}{2}c^2+\tfrac{\rho}{2}\tfrac{\nu}{2}c^2
+    \ \Longrightarrow\
+    B(c)=B+\psi c-\tfrac{\theta}{2}c^2,\ \ \theta\equiv\eta+\tfrac{\rho\nu}{2}.
+  \]
+  \vspace{-8pt}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \includegraphics[width=\linewidth]{analysis/figures/frontier_complexity.pdf}
+    \column{0.48\textwidth}
+      \textbf{Benchmark} ($\theta=0$): $B+\psi c$ grows without bound --- the conclusion is the assumption.
+
+      \textbf{Bottleneck} ($\theta>0$), proved in Lean (\texttt{MainTheorems.lean}): peak at
+      $c^*=\psi/\theta$ since $B(c^*)-B(c)=\tfrac{\theta}{2}(c-c^*)^2$ (\texttt{reductionC\_le\_peak});
+      strictly increasing below and decreasing above $c^*$; the band \emph{closes}, $B(c)<0$ beyond an
+      explicit $\bar c$ (\texttt{reductionC\_neg\_of\_large}); $c^*$ rises with ability when $\eta,\nu$
+      fall with $a$ (Assumption 2's logic).
+
+      \textbf{Prediction.} Newly-used languages concentrate in projects of \emph{intermediate}
+      complexity --- testable with commit size.
+  \end{columns}
+\end{frame}
+
+%================= 13. LA IA =========================================
+\begin{frame}{13 \textperiodcentered{} Where I did not believe the AI}
   \begin{columns}[T]
     \column{0.33\textwidth}
       \includegraphics[page=5,height=0.66\textheight]{hand/derivacion-a-mano.pdf}
@@ -420,7 +451,7 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
 \end{frame}
 
 %================= 13. LA TRAMPA ======================================
-\begin{frame}{13 \textperiodcentered{} This week's trap: where the argument is weakest}
+\begin{frame}{14 \textperiodcentered{} This week's trap: where the argument is weakest}
   \begin{itemize}\footnotesize
     \item \textbf{Does the mechanism need an \emph{agent}?} In the model, no. What creates the band is
       that mode $D$'s value \emph{does not load on $s$} while mode $C$'s value is $\gamma s$
@@ -443,7 +474,7 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
 \end{frame}
 
 %================= 14. CIERRE =========================================
-\begin{frame}{14 \textperiodcentered{} What is in the repository}
+\begin{frame}{15 \textperiodcentered{} What is in the repository}
   \texttt{github.com/Arriola123456/ai-03-quispe}
   \begin{itemize}
     \item \texttt{README.md} --- question, agent's problem, Proposition 2 with all its conditions, the Aouad contrast.
@@ -453,7 +484,7 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
     \item \texttt{hand/derivacion-a-mano.pdf} --- CE via the MGF; $V^S$, $V^C$, $V^D$.
     \item \texttt{lean/} --- the EconCSLib folder as generated: 15 Specs, 15 closed proofs, validation report,
       dependency DAG, audit stubs, \texttt{docs/RUN\_LOG.md}, \texttt{docs/CHECK\_FULL\_OUTPUT.txt}.
-    \item \texttt{analysis/} --- the numerical check behind slide 4.
+    \item \texttt{analysis/} --- the numerical checks behind slides 4 and 12.
   \end{itemize}
   \medskip
   \textbf{One sentence.} The model is right about the band and wrong about one endpoint;
