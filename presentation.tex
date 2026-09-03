@@ -394,28 +394,28 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
 %================= 12. LA IA =========================================
 \begin{frame}{12 \textperiodcentered{} Where I did not believe the AI}
   \begin{columns}[T]
-    \column{0.36\textwidth}
-      \includegraphics[page=5,height=0.70\textheight]{hand/derivacion-a-mano.pdf}
-    \column{0.62\textwidth}\footnotesize
+    \column{0.33\textwidth}
+      \includegraphics[page=5,height=0.66\textheight]{hand/derivacion-a-mano.pdf}
+    \column{0.65\textwidth}\footnotesize
       \textbf{Claim 1 (an LLM, cold).} A confident summary of ``\emph{Coding Beyond Your Training}''
-      --- a title that does not exist, one author instead of two.
-      \textbf{Verdict: fabricated}; the arXiv record settles it (slide 0).
+      --- a title that does not exist, one author instead of two. \textbf{Verdict: fabricated} (slide 0).
 
-      \medskip
-      \textbf{Claim 2 (the risk term in $V^D$).} Delegation shrinks the human-match variance from
-      $s^2/\pi$ to $(1-\lambda)^2s^2/\pi$ and adds $\sigma_D^2$; the penalty is $\tfrac{\rho}{2}$ times
-      the variance. I did not take the CE formula or the $(1-\lambda)^2$ on trust: MGF $\to$
-      $\mathrm{CE}=m-\rho\sigma^2/2$ $\to$ $\mathrm{Var}[(1-\lambda)s\theta]=(1-\lambda)^2s^2/\pi$
-      (on screen). \textbf{Verdict: Equation (3) is right as printed.}
+      \smallskip
+      \textbf{Claim 2 (the risk term in $V^D$).} Delegation shrinks the human-match variance to
+      $(1-\lambda)^2s^2/\pi$ and adds $\sigma_D^2$; the penalty is $\tfrac{\rho}{2}$ times the variance.
+      Checked by hand, on screen: MGF $\to$ $\mathrm{CE}=m-\rho\sigma^2/2$ $\to$
+      $\mathrm{Var}[(1-\lambda)s\theta]=(1-\lambda)^2s^2/\pi$. \textbf{Verdict: Equation (3) is right as printed.}
 
-      \medskip
+      \smallskip
       \textbf{Claim 3 (Codex's draft Lean).} Wrote \texttt{⇒} where Lean 4 wants \texttt{↦}/\texttt{=>};
-      never reached a statement. \textbf{Verdict: syntax, not mathematics} --- but it is why every Spec
-      was tested in a scratch file before scaffolding.
+      never reached a statement. \textbf{Verdict: syntax, not mathematics} --- hence the scratch-file
+      test of every Spec before scaffolding.
 
-      \medskip
-      \textbf{Claim 4 (the paper itself).} ``Strictly increasing and concave'' for $p^1=0<p^2$.
-      \textbf{Verdict: false at $p^2=1$}; Lean proves the saturation (slide 9).
+      \smallskip
+      \textbf{Claim 4 (ChatGPT, on the paper).} Asked whether Proposition 3 has an error: ``no error in
+      the main logic; a small technical omission --- strict monotonicity needs $0<p^2<1$.''
+      \textbf{Verdict: right, and understated} --- at $p^2=1$ the printed claim is false, not merely
+      incomplete; Lean proves the saturation (slide 9).
   \end{columns}
 \end{frame}
 
@@ -447,8 +447,9 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
   \texttt{github.com/Arriola123456/ai-03-quispe}
   \begin{itemize}
     \item \texttt{README.md} --- question, agent's problem, Proposition 2 with all its conditions, the Aouad contrast.
-    \item \texttt{prompts.md} --- raw: the Codex session (107 tool calls, then \texttt{usage\_limit\_exceeded})
-      and the Claude Code session, including every Lean error hit and fixed.
+    \item \texttt{prompts.md} --- raw, three sessions: the ChatGPT study session (the model term by term,
+      Propositions 1--3, a complexity extension), the Codex session (107 tool calls, then
+      \texttt{usage\_limit\_exceeded}) and the Claude Code session, including every Lean error hit and fixed.
     \item \texttt{hand/derivacion-a-mano.pdf} --- CE via the MGF; $V^S$, $V^C$, $V^D$.
     \item \texttt{lean/} --- the EconCSLib folder as generated: 15 Specs, 15 closed proofs, validation report,
       dependency DAG, audit stubs, \texttt{docs/RUN\_LOG.md}, \texttt{docs/CHECK\_FULL\_OUTPUT.txt}.
@@ -456,7 +457,7 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
   \end{itemize}
   \medskip
   \textbf{One sentence.} The model is right about the band and wrong about one endpoint;
-  Lean found the endpoint because it would not let ``$0<p^2$'' stand in for ``$0<p^2<1$''.
+  an LLM noticed the endpoint, and Lean would not let ``$0<p^2$'' stand in for ``$0<p^2<1$''.
 \end{frame}
 
 \end{document}

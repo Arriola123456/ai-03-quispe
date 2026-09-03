@@ -92,7 +92,9 @@ Two things the Lean check made explicit. The identity in Proposition 2 holds
 so the premise only buys nonemptiness. And Proposition 3's "strictly increasing
 and concave" cumulative effect, stated on the domain $p^1 = 0 < p^2$, **fails
 at $p^2 = 1$**, where the effect is constant at $|U_i|$; the strict claims need
-$p^2 < 1$.
+$p^2 < 1$. The second point was first flagged in my ChatGPT study session
+(`prompts.md`, Session 1: "una pequeña omisión técnica"); Lean turned it into a
+theorem with the added hypothesis plus a separate counterexample at $p^2 = 1$.
 
 What the result does *not* claim (Remark 1): the frontier is a *production*
 frontier, not a skill frontier. Adoption does not raise $s_{ik,t}$; the
@@ -115,7 +117,7 @@ an alternative way to produce a task that was previously infeasible.
 | File | What it is |
 |---|---|
 | `README.md` | This page |
-| `prompts.md` | Raw prompts and answers: the Codex session (until the credits ran out) and the Claude Code session |
+| `prompts.md` | Raw prompts and answers, three sessions: the ChatGPT study session (the model term by term, Propositions 1–3, a complexity extension), the Codex session (until the credits ran out) and the Claude Code session |
 | `hand/derivacion-a-mano.pdf` | Five notebook pages: the CARA–Normal certainty equivalent via the MGF, and the derivation of $V^S$, $V^C$, $V^D$ |
 | `presentation.tex` / `.pdf` | The 20-minute Beamer deck, including the required Lean slide |
 | `lean/` | The EconCSLib paper folder `papers/QX26AgenticDelegation/`, copied as generated after the run (15 Specs, 15 closed proofs, reports, audit stubs, `docs/RUN_LOG.md`, `docs/CHECK_FULL.log`) |
