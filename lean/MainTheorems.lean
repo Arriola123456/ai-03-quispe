@@ -196,4 +196,130 @@ theorem cumulative_effect_at_hazard_one_eq_card {ι : Type} (U : Finset ι)
   rw [Finset.sum_congr rfl (fun k _ => by rw [h k])]
   simp
 
+/-! ## Extension: task complexity and the verification bottleneck -/
+
+/-- Solo threshold with complexity: `T^S(c) = T^S + χ c²/2 + ψ c`. -/
+noncomputable def soloThresholdC (TS χ ψ c : ℝ) : ℝ :=
+  TS + χ / 2 * c ^ 2 + ψ * c
+
+/-- Delegation threshold with complexity: execution `χ c²/2`, verification
+`η c²/2` and residual risk `(ρ/2)(ν c²/2)` all rise with `c`. -/
+noncomputable def delegationThresholdC (TD χ η ν ρ c : ℝ) : ℝ :=
+  TD + χ / 2 * c ^ 2 + η / 2 * c ^ 2 + ρ / 2 * (ν / 2 * c ^ 2)
+
+/-- Delegation advantage with complexity, `B(c) = T^S(c) - T^D(c)`. -/
+noncomputable def reductionC (TS TD χ ψ η ν ρ c : ℝ) : ℝ :=
+  soloThresholdC TS χ ψ c - delegationThresholdC TD χ η ν ρ c
+
+/-- Closed form: `B(c) = B + ψ c - θ c²/2` with `θ = η + ρ ν / 2`; the common
+execution curvature `χ` cancels. -/
+theorem reductionC_eq (TS TD χ ψ η ν ρ c : ℝ) :
+    reductionC TS TD χ ψ η ν ρ c
+      = (TS - TD) + ψ * c - (η + ρ * ν / 2) / 2 * c ^ 2 := by
+  unfold reductionC soloThresholdC delegationThresholdC; ring
+
+/-- Benchmark without a bottleneck (`η = ν = 0`): the advantage is `B + ψ c`,
+strictly increasing in complexity when `ψ > 0`. -/
+theorem reductionC_benchmark (TS TD χ ψ ρ c : ℝ) :
+    reductionC TS TD χ ψ 0 0 ρ c = (TS - TD) + ψ * c := by
+  rw [reductionC_eq]; ring
+
+theorem reductionC_benchmark_strictMono (TS TD χ ψ ρ : ℝ) (hψ : 0 < ψ) :
+    StrictMono (fun c : ℝ => reductionC TS TD χ ψ 0 0 ρ c) := by
+  intro c c' h
+  change reductionC TS TD χ ψ 0 0 ρ c < reductionC TS TD χ ψ 0 0 ρ c'
+  rw [reductionC_benchmark, reductionC_benchmark]
+  have := mul_lt_mul_of_pos_left h hψ
+  linarith
+
+/-- Completing the square: `B(c*) - B(c) = θ/2 (c - c*)²` whenever `θ c* = ψ`. -/
+theorem reductionC_sub_peak (TS TD χ ψ η ν ρ c cstar : ℝ)
+    (hc : (η + ρ * ν / 2) * cstar = ψ) :
+    reductionC TS TD χ ψ η ν ρ cstar - reductionC TS TD χ ψ η ν ρ c
+      = (η + ρ * ν / 2) / 2 * (c - cstar) ^ 2 := by
+  rw [reductionC_eq, reductionC_eq, ← hc]; ring
+
+/-- The verification bottleneck: with `θ > 0` the advantage is maximal at the
+interior complexity `c*` with `θ c* = ψ`. -/
+theorem reductionC_le_peak (TS TD χ ψ η ν ρ c cstar : ℝ)
+    (hθ : 0 ≤ η + ρ * ν / 2) (hc : (η + ρ * ν / 2) * cstar = ψ) :
+    reductionC TS TD χ ψ η ν ρ c ≤ reductionC TS TD χ ψ η ν ρ cstar := by
+  have h := reductionC_sub_peak TS TD χ ψ η ν ρ c cstar hc
+  have : 0 ≤ (η + ρ * ν / 2) / 2 * (c - cstar) ^ 2 := by positivity
+  linarith
+
+/-- The peak is `c* = ψ / θ` when `θ > 0`. -/
+theorem reductionC_le_peak_div (TS TD χ ψ η ν ρ c : ℝ) (hθ : 0 < η + ρ * ν / 2) :
+    reductionC TS TD χ ψ η ν ρ c
+      ≤ reductionC TS TD χ ψ η ν ρ (ψ / (η + ρ * ν / 2)) :=
+  reductionC_le_peak TS TD χ ψ η ν ρ c _ hθ.le (mul_div_cancel₀ ψ hθ.ne')
+
+/-- Below the peak the advantage is strictly increasing in complexity. -/
+theorem reductionC_strictMonoOn (TS TD χ ψ η ν ρ cstar : ℝ)
+    (hθ : 0 < η + ρ * ν / 2) (hc : (η + ρ * ν / 2) * cstar = ψ) :
+    StrictMonoOn (fun c : ℝ => reductionC TS TD χ ψ η ν ρ c) (Set.Iic cstar) := by
+  intro c hc1 c' hc2 hlt
+  simp only [Set.mem_Iic] at hc1 hc2
+  change reductionC TS TD χ ψ η ν ρ c < reductionC TS TD χ ψ η ν ρ c'
+  rw [reductionC_eq, reductionC_eq, ← hc]
+  have e : ((TS - TD) + (η + ρ * ν / 2) * cstar * c' - (η + ρ * ν / 2) / 2 * c' ^ 2)
+      - ((TS - TD) + (η + ρ * ν / 2) * cstar * c - (η + ρ * ν / 2) / 2 * c ^ 2)
+      = (c' - c) * ((η + ρ * ν / 2) * (cstar - (c + c') / 2)) := by ring
+  have hpos : 0 < (c' - c) * ((η + ρ * ν / 2) * (cstar - (c + c') / 2)) :=
+    mul_pos (by linarith) (mul_pos hθ (by linarith))
+  linarith
+
+/-- Above the peak the advantage is strictly decreasing in complexity. -/
+theorem reductionC_strictAntiOn (TS TD χ ψ η ν ρ cstar : ℝ)
+    (hθ : 0 < η + ρ * ν / 2) (hc : (η + ρ * ν / 2) * cstar = ψ) :
+    StrictAntiOn (fun c : ℝ => reductionC TS TD χ ψ η ν ρ c) (Set.Ici cstar) := by
+  intro c hc1 c' hc2 hlt
+  simp only [Set.mem_Ici] at hc1 hc2
+  change reductionC TS TD χ ψ η ν ρ c' < reductionC TS TD χ ψ η ν ρ c
+  rw [reductionC_eq, reductionC_eq, ← hc]
+  have e : ((TS - TD) + (η + ρ * ν / 2) * cstar * c - (η + ρ * ν / 2) / 2 * c ^ 2)
+      - ((TS - TD) + (η + ρ * ν / 2) * cstar * c' - (η + ρ * ν / 2) / 2 * c' ^ 2)
+      = (c' - c) * ((η + ρ * ν / 2) * ((c + c') / 2 - cstar)) := by ring
+  have hpos : 0 < (c' - c) * ((η + ρ * ν / 2) * ((c + c') / 2 - cstar)) :=
+    mul_pos (by linarith) (mul_pos hθ (by linarith))
+  linarith
+
+/-- The band closes: for complexity beyond an explicit bound the advantage is
+negative, so delegation no longer activates the language. -/
+theorem reductionC_neg_of_large (TS TD χ ψ η ν ρ c : ℝ)
+    (hθ : 0 < η + ρ * ν / 2) (hψ : 0 ≤ ψ) (hB : 0 ≤ TS - TD)
+    (hc : 4 * ψ + 4 * ((TS - TD) + 1) + (η + ρ * ν / 2) ≤ (η + ρ * ν / 2) * c) :
+    reductionC TS TD χ ψ η ν ρ c < 0 := by
+  rw [reductionC_eq]
+  set θ := η + ρ * ν / 2 with hθdef
+  have h1 : 4 * ψ ≤ θ * c := by linarith
+  have h2 : 4 * ((TS - TD) + 1) ≤ θ * c := by linarith
+  have h3 : θ ≤ θ * c := by linarith
+  have hc1 : 1 ≤ c := by
+    by_contra hlt
+    have hlt2 : c < 1 := not_le.mp hlt
+    have : θ * c < θ * 1 := mul_lt_mul_of_pos_left hlt2 hθ
+    linarith
+  have hc0 : 0 ≤ c := by linarith
+  have hcc : c ≤ c ^ 2 := by nlinarith
+  have hψc : 4 * (ψ * c) ≤ θ * c ^ 2 := by nlinarith [mul_le_mul_of_nonneg_right h1 hc0]
+  have hB' : 4 * ((TS - TD) + 1) ≤ θ * c ^ 2 := by
+    nlinarith [mul_le_mul_of_nonneg_left hcc hθ.le]
+  nlinarith
+
+/-- Comparative static: if verification and residual-risk curvatures fall with
+general ability (Assumption 2 in this extension), the peak complexity `ψ/θ(a)`
+rises with ability. -/
+theorem peak_monotone_in_ability (ψ ρ : ℝ) (hψ : 0 ≤ ψ) (hρ : 0 ≤ ρ)
+    (η ν : ℝ → ℝ) (hη : Antitone η) (hν : Antitone ν)
+    (hpos : ∀ a, 0 < η a + ρ * ν a / 2) :
+    Monotone (fun a : ℝ => ψ / (η a + ρ * ν a / 2)) := by
+  intro a a' haa'
+  have h1 : η a' ≤ η a := hη haa'
+  have h2 : ν a' ≤ ν a := hν haa'
+  have hle : η a' + ρ * ν a' / 2 ≤ η a + ρ * ν a / 2 := by
+    have := mul_le_mul_of_nonneg_left h2 hρ
+    linarith
+  exact div_le_div_of_nonneg_left hψ (hpos a') hle
+
 end QX26AgenticDelegation

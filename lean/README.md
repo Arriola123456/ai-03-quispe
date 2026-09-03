@@ -5,7 +5,7 @@
 |---|---|
 | Final status | Partially formalized |
 | Paper reference | Agentic Delegation and the Language Frontier of Software Developers: A Model and Evidence from Claude Code on GitHub by Alexander Quispe and Kevin Xu; arXiv v2, 2026-07-07. |
-| Lines of Code | 902 |
+| Lines of Code | 1,028 |
 
 ## Key Links
 

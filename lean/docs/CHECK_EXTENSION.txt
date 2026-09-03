@@ -1,0 +1,8 @@
+$ lake build QX26AgenticDelegation   (after the complexity extension)
+✔ [3995/4000] Built QX26AgenticDelegation.MainTheorems (71s)
+Build completed successfully (4000 jobs).
+
+$ python3 scripts/paper_contribution.py check QX26AgenticDelegation --fast
+Build completed successfully (3997 jobs).
++ git diff --check -- papers/QX26AgenticDelegation papers/QX26AgenticDelegation.lean lakefile.toml ':(exclude)papers/QX26AgenticDelegation/source/'
+exit code 0

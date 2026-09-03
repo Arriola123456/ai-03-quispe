@@ -72,7 +72,19 @@ exit code 0
 ```
 
 The full (non-fast) `check` was run afterwards; its output is recorded in
-`docs/CHECK_FULL_OUTPUT.txt` next to this file, including whatever it rejects.
+`docs/CHECK_FULL.log` next to this file, including whatever it rejects.
+
+## Later addition (same day): complexity extension
+
+After the paper-facing closeout, an extension section was appended to
+`MainTheorems.lean` (definitions `soloThresholdC`, `delegationThresholdC`,
+`reductionC` and the theorems listed in `FINAL_VALIDATION_REPORT.md`, Section
+9). The economics come from the student's ChatGPT study session (reproduced in
+the course repository's `prompts.md`); the choice of curvatures and the Lean
+proofs are from the Claude Code session. `PaperInterface.lean` and
+`ProofInterface.lean` were not touched. `lake build QX26AgenticDelegation` and
+`check --fast` were rerun after the addition; their results are recorded in
+`docs/CHECK_EXTENSION.txt`.
 
 ## Files outside this folder that the workflow changed
 

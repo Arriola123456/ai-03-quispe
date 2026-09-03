@@ -127,6 +127,22 @@ $z \ge 0$.
   is $|U_i|$ at every horizon.
 - Proposition 5's strict part only needs one repository in the band, not
   "positive mass" in an opportunity distribution.
+- Complexity extension (not in the source; developed in the student's ChatGPT
+  study session and formalized here). With task complexity $c \ge 0$ entering
+  execution cost in both modes ($T^S(c) = T^S + \chi c^2/2 + \psi c$,
+  $T^D(c) = T^D + \chi c^2/2 + \eta c^2/2 + \tfrac{\rho}{2}\tfrac{\nu}{2}c^2$),
+  the delegation advantage is $B(c) = (T^S - T^D) + \psi c - \theta c^2/2$ with
+  $\theta = \eta + \rho\nu/2$ (`reductionC_eq`). Lean proves: the benchmark
+  $\theta = 0$ is strictly increasing in $c$ (`reductionC_benchmark_strictMono`);
+  for $\theta > 0$ the advantage peaks at $c^* = \psi/\theta$
+  (`reductionC_le_peak`, `reductionC_le_peak_div`, via
+  $B(c^*) - B(c) = \tfrac{\theta}{2}(c - c^*)^2$), is strictly increasing below
+  and strictly decreasing above the peak (`reductionC_strictMonoOn`,
+  `reductionC_strictAntiOn`), turns negative beyond an explicit bound so the
+  band closes (`reductionC_neg_of_large`), and the peak rises with general
+  ability when $\eta$ and $\nu$ are antitone in ability
+  (`peak_monotone_in_ability`). These are extension theorems in
+  `MainTheorems.lean`, not source-facing Specs.
 
 ## 10. Mathematical Typos or Other Fixes Suggested in the Source Paper
 - Proposition 3 and Appendix A.6 state that in the closed-frontier benchmark
