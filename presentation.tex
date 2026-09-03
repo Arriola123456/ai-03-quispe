@@ -267,25 +267,26 @@
 
 %================= 7. COMPUTACIONAL ===================================
 \begin{frame}{7 \textperiodcentered{} What I did computationally --- and with which tools}
+  \footnotesize
   \textbf{EconCSLib workflow} (\texttt{nikhgarg/EconCSLib}, commit \texttt{cf500b74}, Lean/Mathlib \texttt{v4.30.0-rc2}, WSL2 Ubuntu 26.04):
-  \begin{enumerate}\small
+  \begin{enumerate}
     \item pin the v2 PDF outside the repo (SHA-256 \texttt{cddc0487\ldots3d35}); \texttt{init-spec};
     \item fill the \textbf{statement spec}: 15 targets, each with source locator, literal source
       statement and a transparent Lean proposition;
     \item \texttt{paper\_contribution.py new} $\to$ scaffold (Lean-validates every Spec);
     \item \texttt{MainTheorems.lean} (model, threshold algebra) + \texttt{ProofInterface.lean} (15 endpoints);
-    \item \texttt{lake build QX26AgenticDelegation}: \textbf{Build completed successfully (4000 jobs)};\\
+    \item \texttt{lake build QX26AgenticDelegation}: \textbf{Build completed successfully (4000 jobs)};
       \texttt{check --fast}: \textbf{exit 0}; full \texttt{check}: build and status lanes pass, stops at the
       conclusion-provenance audit (needs the LLM-as-judge sidecars; \texttt{lean/docs/CHECK\_FULL\_OUTPUT.txt}).
   \end{enumerate}
   \textbf{Result.} 15/15 Specs proved, no \texttt{sorry}; status \emph{partially formalized}
   (two Proposition 3 rows carry the added $p^2<1$; semantic audits pending).
 
-  \medskip
+  \smallskip
   \textbf{Who ran what --- the blocker.} Codex \texttt{gpt-5.6-sol}/\texttt{xhigh} was launched exactly as
   required; it read the skills, wrote the placeholder spec, tested a scratch file (parse errors:
-  \texttt{⇒} for \texttt{↦}), and died: \texttt{usage\_limit\_exceeded} --- \emph{``Your workspace is out of
-  credits.''} Steps 2--5 were done with Claude Code. Disclosed in \texttt{prompts.md} and
+  \texttt{⇒} for \texttt{↦}) and died: \texttt{usage\_limit\_exceeded}, \emph{``Your workspace is out of
+  credits.''} Steps 2--5 were done with Claude Code --- disclosed in \texttt{prompts.md} and
   \texttt{lean/docs/RUN\_LOG.md}; nothing in \texttt{lean/} is presented as the Codex run.
 \end{frame}
 
