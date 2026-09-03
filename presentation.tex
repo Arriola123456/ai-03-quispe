@@ -17,6 +17,11 @@
 \DeclareUnicodeCharacter{2192}{$\to$}
 \DeclareUnicodeCharacter{211D}{$\mathbb{R}$}
 \DeclareUnicodeCharacter{2115}{$\mathbb{N}$}
+\DeclareUnicodeCharacter{03B7}{$\eta$}
+\DeclareUnicodeCharacter{03BD}{$\nu$}
+\DeclareUnicodeCharacter{03C7}{$\chi$}
+\DeclareUnicodeCharacter{03C8}{$\psi$}
+\DeclareUnicodeCharacter{03B8}{$\theta$}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{amsmath,amssymb}
@@ -55,7 +60,8 @@
     {₀}{{$_0$}}1 {Δ}{{$\Delta$}}1 {ω}{{$\omega$}}1 {σ}{{$\sigma$}}1 {ρ}{{$\rho$}}1
     {γ}{{$\gamma$}}1 {κ}{{$\kappa$}}1 {μ}{{$\mu$}}1 {¬}{{$\neg$}}1 {∧}{{$\wedge$}}1
     {·}{{$\cdot$}}1 {Ω}{{$\Omega$}}1 {⇒}{{$\Rightarrow$}}1 {↦}{{$\mapsto$}}1
-    {∅}{{$\emptyset$}}1
+    {∅}{{$\emptyset$}}1 {χ}{{$\chi$}}1 {ψ}{{$\psi$}}1 {η}{{$\eta$}}1 {ν}{{$\nu$}}1
+    {θ}{{$\theta$}}1 {←}{{$\leftarrow$}}1
 }
 
 \newcommand{\ind}{\mathbf 1}
@@ -391,39 +397,198 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
   \end{itemize}
 \end{frame}
 
-%================= 12. EXTENSION =======================================
-\begin{frame}{12 \textperiodcentered{} Extension: task complexity and the verification bottleneck}
+%================= 12. EXTENSION I: INTUICION =========================
+\begin{frame}{12 \textperiodcentered{} Extension I \textperiodcentered{} Why complexity is a second frontier}
   \footnotesize
-  \textbf{Idea (from my ChatGPT study session).} Complexity $c\ge 0$ raises the project's value $R(c)$ and its
-  execution cost in both modes --- and, when delegated, the cost of \emph{verifying} the agent. $R(c)$ and the
-  common curvature $\chi$ cancel in $B$:
-  \vspace{-2pt}
+  \textbf{The paper's frontier is horizontal:} which \emph{languages} a developer can produce in; every
+  opportunity is a scalar $\omega$. But projects also differ in how much they ask of her --- a
+  \textbf{task complexity} $c\ge 0$ (a 4-file script vs.\ a 40-file service in the same language).
+  Complexity pulls delegation in opposite directions:
+  \begin{itemize}
+    \item[$+$] \textbf{The agent absorbs the routine part.} Each extra unit of complexity costs a solo
+      developer more than one who delegates: delegation removes a per-unit execution cost $\psi$
+      (boilerplate, wiring, the tests the agent writes and runs).
+    \item[$-$] \textbf{Delegated output must be verified, and complexity is where verification bites.}
+      The developer still ``specifies, decomposes and verifies'' (Remark 1); reading 40 generated files is
+      not ten times harder than reading 4, it is worse --- $\kappa$ rises \emph{convexly} in $c$. And a
+      complex project leaves more places for an agent error to hide --- the residual variance
+      $\sigma_D^2$ rises with $c$, and the developer is risk averse ($\rho$).
+    \item[$0$] \textbf{What complexity does not change:} the gross value $R(c)$ and the activation cost
+      $b$ are the same in every mode --- they decide \emph{whether} a project is worth doing, not
+      \emph{how}. The common convexity $\chi$ of execution is also mode-neutral.
+  \end{itemize}
+  \textbf{Net effect.} The delegation advantage $B(c)$ first rises (execution savings dominate) and then
+  falls (the \textbf{verification bottleneck}): an interior sweet spot $c^*$, and beyond $\bar c$
+  delegation activates nothing a solo developer would not. Two frontiers --- horizontal (languages) and
+  vertical (complexity) --- and the vertical one is \emph{bounded}.
+\end{frame}
+
+%================= 13. EXTENSION II: PRIMITIVAS ========================
+\begin{frame}{13 \textperiodcentered{} Extension II \textperiodcentered{} The new primitives, one by one}
+  \footnotesize
+  \begin{tabular}{@{}p{4.1cm}p{2.9cm}p{5.6cm}@{}}
+    \toprule
+    New element & Role & Assumption \\
+    \midrule
+    $c\ge 0$ & task complexity & exogenous, one per $(i,k,t)$ \\
+    $R(c)$ & gross value of complexity & $R'>0$; identical in $S$, $C$, $D$ \\
+    $C_S(c)=\tfrac{\chi}{2}c^2+\psi c$\newline $C_D(c)=\tfrac{\chi}{2}c^2$ & execution cost & convex in both; $\psi>0$ saved by delegating \\
+    $\kappa(a,s,c)=\kappa_0+\tfrac{\eta}{2}c^2$ & verification cost & $\eta>0$; $\kappa_a<0$, $\kappa_s\le 0$ kept; $\eta$ falls with $a$ \\
+    $\sigma_D^2(a,s,A,c)=\sigma_0^2+\tfrac{\nu}{2}c^2$ & residual agent-error variance & $\nu>0$; falls with $a$, $s$, $A$ \\
+    $\lambda$ & share delegated & held fixed (richer version: $\lambda(c)$ falls) \\
+    \bottomrule
+  \end{tabular}
+
+  \smallskip
+  \textbf{Where $c$ enters, mode by mode.}
+  \begin{itemize}
+    \item \textbf{Solo ($S$):} value $+R(c)$; execution $-\tfrac{\chi}{2}c^2-\psi c$; no verification, no agent risk.
+    \item \textbf{Augmentation ($C$):} as $S$ plus $\gamma s-r^C$ --- Copilot's value scales with $s$, not with
+      $c$, so Assumption 1 is untouched.
+    \item \textbf{Delegation ($D$):} value $+R(c)$; execution $-\tfrac{\chi}{2}c^2$ (the $\psi c$ is gone);
+      verification $-\tfrac{\eta}{2}c^2$ in the mean; risk $+\tfrac{\nu}{2}c^2$ in the variance, i.e.\
+      $-\tfrac{\rho}{2}\tfrac{\nu}{2}c^2$ in the CE. $\lambda$, $z(A)$, $a$, $s$ unchanged.
+  \end{itemize}
+  \textbf{At $c=0$} every object is the paper's: $\kappa_0=\kappa(a,s)$, $\sigma_0^2=\sigma_D^2(a,s,A)$.
+\end{frame}
+
+%================= 14. EXTENSION III: LOS TRES MODOS ===================
+\begin{frame}{14 \textperiodcentered{} Extension III \textperiodcentered{} The three modes with complexity}
+  \footnotesize
+  Same CARA--Normal certainty equivalents as Equations (1)--(3); $c$ enters the mean through $R(c)$, the
+  execution costs and $\kappa$, and the variance through $\sigma_D^2$:
+  \begin{align*}
+    V^S(c) &= \omega + R(c) + s\mu - \Big[\tfrac{\chi}{2}c^2+\psi c\Big] - b - \tfrac{\rho s^2}{2\pi},\\
+    V^C(c) &= V^S(c) + \gamma s - r^C,\\
+    V^D(c) &= \omega + R(c) + (1-\lambda)s\mu + \lambda a z(A) - \tfrac{\chi}{2}c^2
+             - \Big[\kappa_0 + \tfrac{\eta}{2}c^2\Big] - r^D - b\\
+           &\qquad - \tfrac{\rho}{2}\Big[\tfrac{(1-\lambda)^2 s^2}{\pi} + \sigma_0^2 + \tfrac{\nu}{2}c^2\Big].
+  \end{align*}
+  \begin{itemize}
+    \item \textbf{Augmentation is unchanged:} $V^C(c)-V^S(c)=\gamma s-r^C$ does not depend on $c$, so
+      Assumption 1 still gives $T^1(c)=T^S(c)$ for an unfamiliar language --- Copilot does not move the
+      entry margin at any complexity.
+    \item \textbf{Menu and activation as before:} $V^g(c)=\max_{m\in M_g}V^m(c)$, $Z^g(c)=\ind[V^g(c)\ge 0]$,
+      $N^g=\sum_k Z^g_k(c_k)$.
+    \item \textbf{$c=0$ recovers the paper exactly:} $V^m(0)$ are Equations (1)--(3).
+  \end{itemize}
+\end{frame}
+
+%================= 15. EXTENSION IV: UMBRALES Y B(c) ===================
+\begin{frame}{15 \textperiodcentered{} Extension IV \textperiodcentered{} Thresholds, $B(c)$ and the bottleneck}
+  \footnotesize
+  Each $V^m(c)$ is still affine in $\omega$, so $V^m(c)\ge 0\iff\omega\ge T^m(c)$:
   \[
-    T^S(c)=T^S+\tfrac{\chi}{2}c^2+\psi c,\quad
-    T^D(c)=T^D+\tfrac{\chi}{2}c^2+\tfrac{\eta}{2}c^2+\tfrac{\rho}{2}\tfrac{\nu}{2}c^2
-    \ \Longrightarrow\
-    B(c)=B+\psi c-\tfrac{\theta}{2}c^2,\ \ \theta\equiv\eta+\tfrac{\rho\nu}{2}.
+    T^S(c)=T^S-R(c)+\tfrac{\chi}{2}c^2+\psi c,\qquad
+    T^D(c)=T^D-R(c)+\tfrac{\chi}{2}c^2+\tfrac{\eta}{2}c^2+\tfrac{\rho}{2}\tfrac{\nu}{2}c^2,
   \]
   \vspace{-8pt}
+  \[
+    B(c)\equiv T^S(c)-T^D(c)=B+\psi c-\tfrac{\theta}{2}c^2,\qquad \theta\equiv\eta+\tfrac{\rho\nu}{2},
+    \qquad B(0)=B .
+  \]
+  \vspace{-10pt}
   \begin{columns}[T]
-    \column{0.50\textwidth}
+    \column{0.46\textwidth}
       \includegraphics[width=\linewidth]{analysis/figures/frontier_complexity.pdf}
-    \column{0.48\textwidth}
-      \textbf{Benchmark} ($\theta=0$): $B+\psi c$ grows without bound --- the conclusion is the assumption.
+    \column{0.52\textwidth}
+      $R(c)$ and $\chi$ cancel: only what is \emph{mode-specific} survives --- the saving $\psi c$ and the
+      bottleneck $\tfrac{\theta}{2}c^2$.
 
-      \textbf{Bottleneck} ($\theta>0$), proved in Lean (\texttt{MainTheorems.lean}): peak at
-      $c^*=\psi/\theta$ since $B(c^*)-B(c)=\tfrac{\theta}{2}(c-c^*)^2$ (\texttt{reductionC\_le\_peak});
-      strictly increasing below and decreasing above $c^*$; the band \emph{closes}, $B(c)<0$ beyond an
-      explicit $\bar c$ (\texttt{reductionC\_neg\_of\_large}); $c^*$ rises with ability when $\eta,\nu$
-      fall with $a$ (Assumption 2's logic).
+      \textbf{Benchmark} $\theta=0$: $B+\psi c$, unbounded --- the conclusion is the assumption.
 
-      \textbf{Prediction.} Newly-used languages concentrate in projects of \emph{intermediate}
-      complexity --- testable with commit size.
+      \textbf{Bottleneck} $\theta>0$: $B(c^*)-B(c)=\tfrac{\theta}{2}(c-c^*)^2$, so the advantage peaks at
+      $c^*=\psi/\theta$, rises below and falls above it, and turns \emph{negative} beyond
+      $\bar c=\big(\psi+\sqrt{\psi^2+2\theta B}\big)/\theta$: the band closes.
+
+      \textbf{Band at complexity $c$} (Prop.\ 2 again): if $B(c)>0$,
+      $Z^2(c)-Z^1(c)=\ind[T^D(c)\le\omega<T^S(c)]$, of width $B(c)$ --- widest at $c^*$.
+
+      \textbf{Ability:} $\eta,\nu$ falling in $a$ $\Rightarrow$ $c^*$ rises with $a$.
+      \textbf{Prediction:} newly-used languages concentrate at \emph{intermediate} complexity.
   \end{columns}
 \end{frame}
 
+%================= 16. EXTENSION V: LEAN I =============================
+\begin{frame}[fragile]{16 \textperiodcentered{} Extension V \textperiodcentered{} Lean I: definitions and the two identities}
+  \small\textbf{Definitions} (\texttt{MainTheorems.lean}; the paper's $T^S,T^D$ are taken as given, $R:\mathbb R\to\mathbb R$ is an arbitrary function):
+\begin{lstlisting}
+noncomputable def soloThresholdC (TS : ℝ) (R : ℝ → ℝ) (χ ψ c : ℝ) : ℝ :=
+  TS - R c + χ / 2 * c ^ 2 + ψ * c
+noncomputable def delegationThresholdC (TD : ℝ) (R : ℝ → ℝ) (χ η ν ρ c : ℝ) : ℝ :=
+  TD - R c + χ / 2 * c ^ 2 + η / 2 * c ^ 2 + ρ / 2 * (ν / 2 * c ^ 2)
+noncomputable def reductionC (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ) : ℝ :=
+  soloThresholdC TS R χ ψ c - delegationThresholdC TD R χ η ν ρ c
+\end{lstlisting}
+  \textbf{The closed form, and the paper as the $c=0$ case:}
+\begin{lstlisting}
+theorem reductionC_eq (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ) :
+    reductionC TS TD R χ ψ η ν ρ c = (TS - TD) + ψ * c - (η + ρ * ν / 2) / 2 * c ^ 2 := by
+  unfold reductionC soloThresholdC delegationThresholdC; ring
+
+theorem reductionC_zero (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ : ℝ) :
+    reductionC TS TD R χ ψ η ν ρ 0 = TS - TD := by
+  rw [reductionC_eq]; ring
+\end{lstlisting}
+  \textbf{Reading.} \texttt{ring} proves that $R(c)$ cancels for \emph{every} function $R$ and that $\chi$
+  cancels: the only terms that survive are the mode-specific ones. \texttt{reductionC\_zero} is the check
+  that the extension nests the paper.
+\end{frame}
+
+%================= 17. EXTENSION VI: LEAN II ===========================
+\begin{frame}[fragile]{17 \textperiodcentered{} Extension VI \textperiodcentered{} Lean II: the band and the peak}
+  \small\textbf{The band at complexity $c$} --- a corollary of Proposition 2's lemma \texttt{band\_indicator}:
+\begin{lstlisting}
+theorem activation_band_C (ω TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ)
+    (hB : 0 < reductionC TS TD R χ ψ η ν ρ c) :
+    (if 0 ≤ max (ω - soloThresholdC TS R χ ψ c) (ω - delegationThresholdC TD R χ η ν ρ c)
+        then (1 : ℝ) else 0) - (if 0 ≤ ω - soloThresholdC TS R χ ψ c then (1 : ℝ) else 0)
+      = if delegationThresholdC TD R χ η ν ρ c ≤ ω ∧ ω < soloThresholdC TS R χ ψ c
+          then (1 : ℝ) else 0 :=
+  band_indicator (by unfold reductionC at hB; linarith)
+\end{lstlisting}
+  \textbf{The peak, by completing the square} ($\theta c^*=\psi$):
+\begin{lstlisting}
+theorem reductionC_sub_peak ... (hc : (η + ρ * ν / 2) * cstar = ψ) :
+    reductionC TS TD R χ ψ η ν ρ cstar - reductionC TS TD R χ ψ η ν ρ c
+      = (η + ρ * ν / 2) / 2 * (c - cstar) ^ 2 := by
+  rw [reductionC_eq, reductionC_eq, ← hc]; ring
+theorem reductionC_le_peak ... (hθ : 0 ≤ η + ρ * ν / 2) (hc : (η + ρ * ν / 2) * cstar = ψ) :
+    reductionC TS TD R χ ψ η ν ρ c ≤ reductionC TS TD R χ ψ η ν ρ cstar := by
+  have h := reductionC_sub_peak TS TD R χ ψ η ν ρ c cstar hc
+  have : 0 ≤ (η + ρ * ν / 2) / 2 * (c - cstar) ^ 2 := by positivity
+  linarith
+\end{lstlisting}
+  \textbf{Reading.} The band result is Proposition 2's proof with $T^S(c),T^D(c)$ substituted; the peak needs
+  only $\theta\ge 0$ (\texttt{positivity} certifies the square).
+\end{frame}
+
+%================= 18. EXTENSION VII: LEAN III =========================
+\begin{frame}[fragile]{18 \textperiodcentered{} Extension VII \textperiodcentered{} Lean III: monotonicity, closing, ability}
+  \small\textbf{Statements} ($\theta$ abbreviates \texttt{η + ρ * ν / 2}; proofs in \texttt{MainTheorems.lean}):
+\begin{lstlisting}
+theorem reductionC_benchmark_strictMono ... (hψ : 0 < ψ) :
+    StrictMono (fun c : ℝ => reductionC TS TD R χ ψ 0 0 ρ c)          -- θ = 0: unbounded
+theorem reductionC_strictMonoOn ... (hθ : 0 < θ) (hc : θ * cstar = ψ) :
+    StrictMonoOn (fun c : ℝ => reductionC TS TD R χ ψ η ν ρ c) (Set.Iic cstar)
+theorem reductionC_strictAntiOn ... : StrictAntiOn (fun c : ℝ => reductionC ...) (Set.Ici cstar)
+theorem reductionC_neg_of_large ... (hθ : 0 < θ) (hψ : 0 ≤ ψ) (hB : 0 ≤ TS - TD)
+    (hc : 4 * ψ + 4 * ((TS - TD) + 1) + θ ≤ θ * c) : reductionC TS TD R χ ψ η ν ρ c < 0
+theorem peak_monotone_in_ability (ψ ρ : ℝ) (hψ : 0 ≤ ψ) (hρ : 0 ≤ ρ) (η ν : ℝ → ℝ)
+    (hη : Antitone η) (hν : Antitone ν) (hpos : ∀ a, 0 < η a + ρ * ν a / 2) :
+    Monotone (fun a : ℝ => ψ / (η a + ρ * ν a / 2))                    -- c* rises with a
+\end{lstlisting}
+  \footnotesize
+  \textbf{What Lean verifies, and under what.} The peak needs only $\theta\ge 0$; strict monotonicity and the
+  closing need $\theta>0$ (plus $\psi\ge 0$, $B\ge 0$ for the closing); the ability result needs $\rho\ge 0$,
+  $\psi\ge 0$. The closing theorem gives an \emph{explicit sufficient} bound on $c$, not the exact root
+  $\bar c$. The quadratic forms are modelling choices: Lean certifies the \emph{algebra} of the extension, not
+  the economics of the functional forms. Build after the extension: \texttt{Build completed successfully
+  (4000 jobs)}; \texttt{check --fast}: exit 0; no \texttt{sorry}.
+\end{frame}
+
 %================= 13. LA IA =========================================
-\begin{frame}{13 \textperiodcentered{} Where I did not believe the AI}
+\begin{frame}{19 \textperiodcentered{} Where I did not believe the AI}
   \begin{columns}[T]
     \column{0.33\textwidth}
       \includegraphics[page=5,height=0.66\textheight]{hand/derivacion-a-mano.pdf}
@@ -451,7 +616,7 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
 \end{frame}
 
 %================= 13. LA TRAMPA ======================================
-\begin{frame}{14 \textperiodcentered{} This week's trap: where the argument is weakest}
+\begin{frame}{20 \textperiodcentered{} This week's trap: where the argument is weakest}
   \begin{itemize}\footnotesize
     \item \textbf{Does the mechanism need an \emph{agent}?} In the model, no. What creates the band is
       that mode $D$'s value \emph{does not load on $s$} while mode $C$'s value is $\gamma s$
@@ -474,7 +639,7 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
 \end{frame}
 
 %================= 14. CIERRE =========================================
-\begin{frame}{15 \textperiodcentered{} What is in the repository}
+\begin{frame}{21 \textperiodcentered{} What is in the repository}
   \texttt{github.com/Arriola123456/ai-03-quispe}
   \begin{itemize}
     \item \texttt{README.md} --- question, agent's problem, Proposition 2 with all its conditions, the Aouad contrast.
@@ -484,7 +649,7 @@ theorem band_indicator {ω TS TD : ℝ} (hlt : TD < TS) :
     \item \texttt{hand/derivacion-a-mano.pdf} --- CE via the MGF; $V^S$, $V^C$, $V^D$.
     \item \texttt{lean/} --- the EconCSLib folder as generated: 15 Specs, 15 closed proofs, validation report,
       dependency DAG, audit stubs, \texttt{docs/RUN\_LOG.md}, \texttt{docs/CHECK\_FULL\_OUTPUT.txt}.
-    \item \texttt{analysis/} --- the numerical checks behind slides 4 and 12.
+    \item \texttt{analysis/} --- the numerical checks behind slides 4 and 15.
   \end{itemize}
   \medskip
   \textbf{One sentence.} The model is right about the band and wrong about one endpoint;

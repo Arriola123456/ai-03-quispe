@@ -1,5 +1,9 @@
 $ lake build QX26AgenticDelegation   (after the complexity extension)
-✔ [3995/4000] Built QX26AgenticDelegation.MainTheorems (71s)
+✔ [3995/4000] Built QX26AgenticDelegation.MainTheorems (39s)
+✔ [3996/4000] Built QX26AgenticDelegation.Assumptions (4.6s)
+✔ [3997/4000] Built QX26AgenticDelegation.PaperInterface (5.8s)
+⚠ [3998/4000] Built QX26AgenticDelegation.ProofInterface (7.1s)
+✔ [3999/4000] Built QX26AgenticDelegation (4.5s)
 Build completed successfully (4000 jobs).
 
 $ python3 scripts/paper_contribution.py check QX26AgenticDelegation --fast

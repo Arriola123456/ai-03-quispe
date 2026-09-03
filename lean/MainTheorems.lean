@@ -196,71 +196,99 @@ theorem cumulative_effect_at_hazard_one_eq_card {ι : Type} (U : Finset ι)
   rw [Finset.sum_congr rfl (fun k _ => by rw [h k])]
   simp
 
-/-! ## Extension: task complexity and the verification bottleneck -/
+/-! ## Extension: task complexity and the verification bottleneck
 
-/-- Solo threshold with complexity: `T^S(c) = T^S + χ c²/2 + ψ c`. -/
-noncomputable def soloThresholdC (TS χ ψ c : ℝ) : ℝ :=
-  TS + χ / 2 * c ^ 2 + ψ * c
+Not in the source. A project of complexity `c ≥ 0` is worth `R c` more (the
+same in every production mode), costs more to execute in both modes,
+`C_S(c) = χ c²/2 + ψ c` and `C_D(c) = χ c²/2` (delegation removes the linear
+component, `ψ > 0`), and, when delegated, is costlier to verify,
+`κ(c) = κ₀ + η c²/2`, and riskier, `σ_D²(c) = σ₀² + ν c²/2`. The paper's
+thresholds `T^S` and `T^D` (checked from primitives in `PaperInterface.lean`)
+are taken as given; the extension adds the complexity terms to them. The
+delegation share `λ` is kept fixed. -/
 
-/-- Delegation threshold with complexity: execution `χ c²/2`, verification
-`η c²/2` and residual risk `(ρ/2)(ν c²/2)` all rise with `c`. -/
-noncomputable def delegationThresholdC (TD χ η ν ρ c : ℝ) : ℝ :=
-  TD + χ / 2 * c ^ 2 + η / 2 * c ^ 2 + ρ / 2 * (ν / 2 * c ^ 2)
+/-- Solo threshold with complexity: `T^S(c) = T^S - R(c) + χ c²/2 + ψ c`. -/
+noncomputable def soloThresholdC (TS : ℝ) (R : ℝ → ℝ) (χ ψ c : ℝ) : ℝ :=
+  TS - R c + χ / 2 * c ^ 2 + ψ * c
+
+/-- Delegation threshold with complexity:
+`T^D(c) = T^D - R(c) + χ c²/2 + η c²/2 + (ρ/2)(ν c²/2)`. -/
+noncomputable def delegationThresholdC (TD : ℝ) (R : ℝ → ℝ) (χ η ν ρ c : ℝ) : ℝ :=
+  TD - R c + χ / 2 * c ^ 2 + η / 2 * c ^ 2 + ρ / 2 * (ν / 2 * c ^ 2)
 
 /-- Delegation advantage with complexity, `B(c) = T^S(c) - T^D(c)`. -/
-noncomputable def reductionC (TS TD χ ψ η ν ρ c : ℝ) : ℝ :=
-  soloThresholdC TS χ ψ c - delegationThresholdC TD χ η ν ρ c
+noncomputable def reductionC (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ) : ℝ :=
+  soloThresholdC TS R χ ψ c - delegationThresholdC TD R χ η ν ρ c
 
-/-- Closed form: `B(c) = B + ψ c - θ c²/2` with `θ = η + ρ ν / 2`; the common
-execution curvature `χ` cancels. -/
-theorem reductionC_eq (TS TD χ ψ η ν ρ c : ℝ) :
-    reductionC TS TD χ ψ η ν ρ c
+/-- Closed form: `B(c) = B + ψ c - θ c²/2` with `θ = η + ρ ν / 2`. The project
+value `R(c)` and the common execution curvature `χ` cancel. -/
+theorem reductionC_eq (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ) :
+    reductionC TS TD R χ ψ η ν ρ c
       = (TS - TD) + ψ * c - (η + ρ * ν / 2) / 2 * c ^ 2 := by
   unfold reductionC soloThresholdC delegationThresholdC; ring
 
-/-- Benchmark without a bottleneck (`η = ν = 0`): the advantage is `B + ψ c`,
-strictly increasing in complexity when `ψ > 0`. -/
-theorem reductionC_benchmark (TS TD χ ψ ρ c : ℝ) :
-    reductionC TS TD χ ψ 0 0 ρ c = (TS - TD) + ψ * c := by
+/-- `c = 0` recovers the paper's reduction `B = T^S - T^D` exactly. -/
+theorem reductionC_zero (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ : ℝ) :
+    reductionC TS TD R χ ψ η ν ρ 0 = TS - TD := by
   rw [reductionC_eq]; ring
 
-theorem reductionC_benchmark_strictMono (TS TD χ ψ ρ : ℝ) (hψ : 0 < ψ) :
-    StrictMono (fun c : ℝ => reductionC TS TD χ ψ 0 0 ρ c) := by
+/-- The activation band at complexity `c` (Proposition 2 with complexity, for an
+unfamiliar language so that `T^1(c) = T^S(c)`): if `B(c) > 0` then
+`Z²(c) - Z¹(c) = 1[T^D(c) ≤ ω < T^S(c)]`, a band of width `B(c)`. -/
+theorem activation_band_C (ω TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ)
+    (hB : 0 < reductionC TS TD R χ ψ η ν ρ c) :
+    (if 0 ≤ max (ω - soloThresholdC TS R χ ψ c) (ω - delegationThresholdC TD R χ η ν ρ c)
+        then (1 : ℝ) else 0)
+      - (if 0 ≤ ω - soloThresholdC TS R χ ψ c then (1 : ℝ) else 0)
+      = if delegationThresholdC TD R χ η ν ρ c ≤ ω ∧ ω < soloThresholdC TS R χ ψ c
+          then (1 : ℝ) else 0 :=
+  band_indicator (by unfold reductionC at hB; linarith)
+
+/-- Benchmark without a bottleneck (`η = ν = 0`): the advantage is `B + ψ c`. -/
+theorem reductionC_benchmark (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ ρ c : ℝ) :
+    reductionC TS TD R χ ψ 0 0 ρ c = (TS - TD) + ψ * c := by
+  rw [reductionC_eq]; ring
+
+/-- In the benchmark the advantage is strictly increasing in complexity when
+`ψ > 0`: the conclusion is the assumption. -/
+theorem reductionC_benchmark_strictMono (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ ρ : ℝ) (hψ : 0 < ψ) :
+    StrictMono (fun c : ℝ => reductionC TS TD R χ ψ 0 0 ρ c) := by
   intro c c' h
-  change reductionC TS TD χ ψ 0 0 ρ c < reductionC TS TD χ ψ 0 0 ρ c'
+  change reductionC TS TD R χ ψ 0 0 ρ c < reductionC TS TD R χ ψ 0 0 ρ c'
   rw [reductionC_benchmark, reductionC_benchmark]
   have := mul_lt_mul_of_pos_left h hψ
   linarith
 
 /-- Completing the square: `B(c*) - B(c) = θ/2 (c - c*)²` whenever `θ c* = ψ`. -/
-theorem reductionC_sub_peak (TS TD χ ψ η ν ρ c cstar : ℝ)
+theorem reductionC_sub_peak (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c cstar : ℝ)
     (hc : (η + ρ * ν / 2) * cstar = ψ) :
-    reductionC TS TD χ ψ η ν ρ cstar - reductionC TS TD χ ψ η ν ρ c
+    reductionC TS TD R χ ψ η ν ρ cstar - reductionC TS TD R χ ψ η ν ρ c
       = (η + ρ * ν / 2) / 2 * (c - cstar) ^ 2 := by
   rw [reductionC_eq, reductionC_eq, ← hc]; ring
 
-/-- The verification bottleneck: with `θ > 0` the advantage is maximal at the
-interior complexity `c*` with `θ c* = ψ`. -/
-theorem reductionC_le_peak (TS TD χ ψ η ν ρ c cstar : ℝ)
+/-- The verification bottleneck: with `θ ≥ 0` the advantage is maximal at the
+complexity `c*` with `θ c* = ψ`. -/
+theorem reductionC_le_peak (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c cstar : ℝ)
     (hθ : 0 ≤ η + ρ * ν / 2) (hc : (η + ρ * ν / 2) * cstar = ψ) :
-    reductionC TS TD χ ψ η ν ρ c ≤ reductionC TS TD χ ψ η ν ρ cstar := by
-  have h := reductionC_sub_peak TS TD χ ψ η ν ρ c cstar hc
+    reductionC TS TD R χ ψ η ν ρ c ≤ reductionC TS TD R χ ψ η ν ρ cstar := by
+  have h := reductionC_sub_peak TS TD R χ ψ η ν ρ c cstar hc
   have : 0 ≤ (η + ρ * ν / 2) / 2 * (c - cstar) ^ 2 := by positivity
   linarith
 
 /-- The peak is `c* = ψ / θ` when `θ > 0`. -/
-theorem reductionC_le_peak_div (TS TD χ ψ η ν ρ c : ℝ) (hθ : 0 < η + ρ * ν / 2) :
-    reductionC TS TD χ ψ η ν ρ c
-      ≤ reductionC TS TD χ ψ η ν ρ (ψ / (η + ρ * ν / 2)) :=
-  reductionC_le_peak TS TD χ ψ η ν ρ c _ hθ.le (mul_div_cancel₀ ψ hθ.ne')
+theorem reductionC_le_peak_div (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ)
+    (hθ : 0 < η + ρ * ν / 2) :
+    reductionC TS TD R χ ψ η ν ρ c
+      ≤ reductionC TS TD R χ ψ η ν ρ (ψ / (η + ρ * ν / 2)) :=
+  reductionC_le_peak TS TD R χ ψ η ν ρ c _ hθ.le (mul_div_cancel₀ ψ hθ.ne')
 
 /-- Below the peak the advantage is strictly increasing in complexity. -/
-theorem reductionC_strictMonoOn (TS TD χ ψ η ν ρ cstar : ℝ)
+theorem reductionC_strictMonoOn (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ cstar : ℝ)
     (hθ : 0 < η + ρ * ν / 2) (hc : (η + ρ * ν / 2) * cstar = ψ) :
-    StrictMonoOn (fun c : ℝ => reductionC TS TD χ ψ η ν ρ c) (Set.Iic cstar) := by
+    StrictMonoOn (fun c : ℝ => reductionC TS TD R χ ψ η ν ρ c) (Set.Iic cstar) := by
   intro c hc1 c' hc2 hlt
   simp only [Set.mem_Iic] at hc1 hc2
-  change reductionC TS TD χ ψ η ν ρ c < reductionC TS TD χ ψ η ν ρ c'
+  change reductionC TS TD R χ ψ η ν ρ c < reductionC TS TD R χ ψ η ν ρ c'
   rw [reductionC_eq, reductionC_eq, ← hc]
   have e : ((TS - TD) + (η + ρ * ν / 2) * cstar * c' - (η + ρ * ν / 2) / 2 * c' ^ 2)
       - ((TS - TD) + (η + ρ * ν / 2) * cstar * c - (η + ρ * ν / 2) / 2 * c ^ 2)
@@ -270,12 +298,12 @@ theorem reductionC_strictMonoOn (TS TD χ ψ η ν ρ cstar : ℝ)
   linarith
 
 /-- Above the peak the advantage is strictly decreasing in complexity. -/
-theorem reductionC_strictAntiOn (TS TD χ ψ η ν ρ cstar : ℝ)
+theorem reductionC_strictAntiOn (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ cstar : ℝ)
     (hθ : 0 < η + ρ * ν / 2) (hc : (η + ρ * ν / 2) * cstar = ψ) :
-    StrictAntiOn (fun c : ℝ => reductionC TS TD χ ψ η ν ρ c) (Set.Ici cstar) := by
+    StrictAntiOn (fun c : ℝ => reductionC TS TD R χ ψ η ν ρ c) (Set.Ici cstar) := by
   intro c hc1 c' hc2 hlt
   simp only [Set.mem_Ici] at hc1 hc2
-  change reductionC TS TD χ ψ η ν ρ c' < reductionC TS TD χ ψ η ν ρ c
+  change reductionC TS TD R χ ψ η ν ρ c' < reductionC TS TD R χ ψ η ν ρ c
   rw [reductionC_eq, reductionC_eq, ← hc]
   have e : ((TS - TD) + (η + ρ * ν / 2) * cstar * c - (η + ρ * ν / 2) / 2 * c ^ 2)
       - ((TS - TD) + (η + ρ * ν / 2) * cstar * c' - (η + ρ * ν / 2) / 2 * c' ^ 2)
@@ -284,12 +312,12 @@ theorem reductionC_strictAntiOn (TS TD χ ψ η ν ρ cstar : ℝ)
     mul_pos (by linarith) (mul_pos hθ (by linarith))
   linarith
 
-/-- The band closes: for complexity beyond an explicit bound the advantage is
+/-- The band closes: beyond an explicit complexity bound the advantage is
 negative, so delegation no longer activates the language. -/
-theorem reductionC_neg_of_large (TS TD χ ψ η ν ρ c : ℝ)
+theorem reductionC_neg_of_large (TS TD : ℝ) (R : ℝ → ℝ) (χ ψ η ν ρ c : ℝ)
     (hθ : 0 < η + ρ * ν / 2) (hψ : 0 ≤ ψ) (hB : 0 ≤ TS - TD)
     (hc : 4 * ψ + 4 * ((TS - TD) + 1) + (η + ρ * ν / 2) ≤ (η + ρ * ν / 2) * c) :
-    reductionC TS TD χ ψ η ν ρ c < 0 := by
+    reductionC TS TD R χ ψ η ν ρ c < 0 := by
   rw [reductionC_eq]
   set θ := η + ρ * ν / 2 with hθdef
   have h1 : 4 * ψ ≤ θ * c := by linarith
@@ -307,9 +335,9 @@ theorem reductionC_neg_of_large (TS TD χ ψ η ν ρ c : ℝ)
     nlinarith [mul_le_mul_of_nonneg_left hcc hθ.le]
   nlinarith
 
-/-- Comparative static: if verification and residual-risk curvatures fall with
-general ability (Assumption 2 in this extension), the peak complexity `ψ/θ(a)`
-rises with ability. -/
+/-- Comparative static: if the verification and residual-risk curvatures fall
+with general ability (the logic of Assumption 2), the peak complexity
+`ψ / θ(a)` rises with ability. -/
 theorem peak_monotone_in_ability (ψ ρ : ℝ) (hψ : 0 ≤ ψ) (hρ : 0 ≤ ρ)
     (η ν : ℝ → ℝ) (hη : Antitone η) (hν : Antitone ν)
     (hpos : ∀ a, 0 < η a + ρ * ν a / 2) :

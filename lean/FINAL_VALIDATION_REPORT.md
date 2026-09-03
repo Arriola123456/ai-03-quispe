@@ -132,7 +132,11 @@ $z \ge 0$.
   execution cost in both modes ($T^S(c) = T^S + \chi c^2/2 + \psi c$,
   $T^D(c) = T^D + \chi c^2/2 + \eta c^2/2 + \tfrac{\rho}{2}\tfrac{\nu}{2}c^2$),
   the delegation advantage is $B(c) = (T^S - T^D) + \psi c - \theta c^2/2$ with
-  $\theta = \eta + \rho\nu/2$ (`reductionC_eq`). Lean proves: the benchmark
+  $\theta = \eta + \rho\nu/2$ (`reductionC_eq`; the gross value $R(c)$, an
+  arbitrary function in Lean, and the common curvature $\chi$ cancel).
+  $c = 0$ recovers the paper's $B$ (`reductionC_zero`), and the activation band
+  at complexity $c$ has width $B(c)$ (`activation_band_C`, a corollary of the
+  indicator lemma behind Proposition 2). Lean proves: the benchmark
   $\theta = 0$ is strictly increasing in $c$ (`reductionC_benchmark_strictMono`);
   for $\theta > 0$ the advantage peaks at $c^* = \psi/\theta$
   (`reductionC_le_peak`, `reductionC_le_peak_div`, via

@@ -116,16 +116,48 @@ an alternative way to produce a task that was previously infeasible.
 
 Above the floor. The idea came out of my ChatGPT study session (`prompts.md`,
 Session 1); the choice of curvatures and the Lean proofs are from this
-repository. Let a project have complexity $c \ge 0$: it is worth more, $R(c)$,
-but costs more to execute in both modes, and — when delegated — more to verify
-and more likely to hide an agent error. With
+repository.
 
-$$T^S(c) = T^S + \tfrac{\chi}{2}c^2 + \psi c, \qquad
-  T^D(c) = T^D + \tfrac{\chi}{2}c^2 + \tfrac{\eta}{2}c^2 + \tfrac{\rho}{2}\,\tfrac{\nu}{2}c^2,$$
+**Intuition.** The paper's frontier is horizontal — which *languages* a
+developer can produce in. Projects also differ in how much they ask of her: a
+task complexity $c \ge 0$. Complexity pulls delegation in opposite directions.
+The agent absorbs the routine part, so each extra unit of complexity costs a
+solo developer more than one who delegates (a per-unit execution saving
+$\psi$). But delegated output must be *verified*, and complexity is where
+verification bites: $\kappa$ rises convexly in $c$ (curvature $\eta$) and more
+complex projects leave more places for an agent error to hide, so the residual
+variance $\sigma_D^2$ rises with $c$ (curvature $\nu$) — and the developer is
+risk averse. The gross value $R(c)$ and the activation cost $b$ are the same in
+every mode: they decide whether a project is worth doing, not how.
 
-$R(c)$ and the common curvature $\chi$ cancel in the delegation advantage:
+| New element | Role | Assumption |
+|---|---|---|
+| $c \ge 0$ | task complexity of the opportunity | exogenous, one per $(i,k,t)$ |
+| $R(c)$ | gross value of complexity | $R' > 0$; identical in $S$, $C$, $D$ |
+| $C_S(c) = \tfrac{\chi}{2}c^2 + \psi c$, $C_D(c) = \tfrac{\chi}{2}c^2$ | execution cost | convex in both modes; $\psi > 0$ saved by delegating |
+| $\kappa(a,s,c) = \kappa_0 + \tfrac{\eta}{2}c^2$ | verification cost | $\eta > 0$; $\kappa_a < 0$, $\kappa_s \le 0$ kept; $\eta$ falls with $a$ |
+| $\sigma_D^2(a,s,A,c) = \sigma_0^2 + \tfrac{\nu}{2}c^2$ | residual agent-error variance | $\nu > 0$; falls with $a$, $s$, $A$ |
+| $\lambda$ | share delegated | held fixed |
 
-$$B(c) = B + \psi c - \tfrac{\theta}{2}c^2, \qquad \theta \equiv \eta + \tfrac{\rho\nu}{2}.$$
+**The three modes with complexity** (same certainty equivalents as (1)–(3)):
+
+$$V^S(c) = \omega + R(c) + s\mu - \Big[\tfrac{\chi}{2}c^2 + \psi c\Big] - b - \tfrac{\rho s^2}{2\pi},
+\qquad V^C(c) = V^S(c) + \gamma s - r^C,$$
+
+$$V^D(c) = \omega + R(c) + (1-\lambda)s\mu + \lambda a z(A) - \tfrac{\chi}{2}c^2
+  - \Big[\kappa_0 + \tfrac{\eta}{2}c^2\Big] - r^D - b
+  - \tfrac{\rho}{2}\Big[\tfrac{(1-\lambda)^2 s^2}{\pi} + \sigma_0^2 + \tfrac{\nu}{2}c^2\Big].$$
+
+$V^C(c) - V^S(c) = \gamma s - r^C$ does not depend on $c$, so Assumption 1 still
+gives $T^1(c) = T^S(c)$ for an unfamiliar language; $c = 0$ recovers the paper.
+Each $V^m(c)$ is affine in $\omega$, with thresholds
+
+$$T^S(c) = T^S - R(c) + \tfrac{\chi}{2}c^2 + \psi c, \qquad
+  T^D(c) = T^D - R(c) + \tfrac{\chi}{2}c^2 + \tfrac{\eta}{2}c^2 + \tfrac{\rho}{2}\,\tfrac{\nu}{2}c^2,$$
+
+and $R(c)$ and the common curvature $\chi$ cancel in the delegation advantage:
+
+$$B(c) = B + \psi c - \tfrac{\theta}{2}c^2, \qquad \theta \equiv \eta + \tfrac{\rho\nu}{2}, \qquad B(0) = B.$$
 
 The benchmark $\theta = 0$ (no verification bottleneck) gives $B(c) = B + \psi c$,
 strictly increasing — the conclusion is the assumption. With $\theta > 0$ the
@@ -137,12 +169,18 @@ language; and $c^*$ rises with general ability when $\eta$ and $\nu$ fall with
 $a$ — the logic of Assumption 2 in a new dimension. Prediction: newly-used
 languages should concentrate in projects of intermediate complexity.
 
+The band at complexity $c$ is Proposition 2 again: if $B(c) > 0$,
+$Z^2(c) - Z^1(c) = \mathbf 1[T^D(c) \le \omega < T^S(c)]$, of width $B(c)$ —
+widest at $c^*$, empty beyond $\bar c$.
+
 All of this is proved in Lean as extension theorems in `lean/MainTheorems.lean`
-(`reductionC_eq`, `reductionC_benchmark_strictMono`, `reductionC_le_peak`,
+(`reductionC_eq` — for an arbitrary function $R$ —, `reductionC_zero`,
+`activation_band_C`, `reductionC_benchmark_strictMono`, `reductionC_le_peak`,
 `reductionC_strictMonoOn`, `reductionC_strictAntiOn`, `reductionC_neg_of_large`,
 `peak_monotone_in_ability`); the source-facing Specs were not touched, and
 `lake build` / `check --fast` were rerun (`lean/docs/CHECK_EXTENSION.txt`).
-Figure: `analysis/figures/frontier_complexity.pdf`.
+Figure: `analysis/figures/frontier_complexity.pdf`. Slides 12–16 of the deck
+walk through the intuition, the three modes, the thresholds and the Lean code.
 
 ## What is in this repository
 
