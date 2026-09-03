@@ -1,103 +1,136 @@
-# Repository 1 — Aouad, Lykouris & Zhong (2026)
+# Repository 3 — Quispe & Xu (2026)
 
-*Human-AI Productivity Paradoxes: Modeling the Interplay of Skill, Effort, and AI Assistance*
-[arXiv:2605.11350](https://arxiv.org/abs/2605.11350) · [cs.GT]
+*Agentic Delegation and the Language Frontier of Software Developers: A Model and
+Evidence from Claude Code on GitHub*
+[arXiv:2605.25438](https://arxiv.org/abs/2605.25438) (v2, 2026-07-07) · econ.GN · 71 pp.
 
-> **This is the worked example** for *Artificial Intelligence and Economic
-> Modeling* (UP 2026-II). It shows what a weekly repository looks like when it is
-> done well. Yours does not have to be this long — see "What is required" below.
+> **Honesty note, first.** The issue requires the Lean component to be produced
+> with Codex (`gpt-5.6-sol`, effort `xhigh`). That run was launched exactly as
+> instructed and died with `usage_limit_exceeded` ("Your workspace is out of
+> credits") after reading the EconCSLib skills and writing the placeholder
+> statement spec — no file in `papers/` was ever created. The remaining
+> workflow steps (statement spec, `new`, Lean proofs, checks, reports) were done
+> with **Claude Code**. Everything is disclosed in `prompts.md`,
+> `lean/docs/RUN_LOG.md` and the deck; nothing in `lean/` is presented as the
+> Codex run.
 
 ---
 
 ## What question the paper answers
 
-When does AI assistance make a worker **less** productive?
+Why would a developer who has only ever shipped Python suddenly start shipping
+Rust the month she adopts a coding *agent* — when two years of ChatGPT and
+Copilot did nothing of the kind?
 
-The paper picks one mechanism and pushes it: AI is a **perfectly substitutable
-input**. Skill $s$, effort $e$ and assistance $a$ enter production only through
-their sum, $x = s + e + a$. Nothing else is going on — no learning, no
-complementarity, no contracting. Everything that follows comes from that single
-modelling choice plus a linear cost of effort.
+The paper's answer is a **menu expansion**. Conversational AI (Generation 1)
+*augments* work in languages the developer already knows: its value is
+proportional to her execution skill $s$ in that language, so it cannot make an
+unfamiliar language viable. Agentic AI (Generation 2) adds a third production
+mode, *delegation*, whose value does not require language-specific skill. That
+mode has its own entry threshold, and the languages whose opportunities fall
+between the new and the old threshold — the **activation band** — are exactly
+the ones that appear for the first time at adoption.
 
 ## The agent's problem
 
-$$\max_{e \ge 0}\; p(s+e+a) - \gamma e$$
+At a fixed developer–language–month, an opportunity of value $\omega$ and
+activation cost $b$ can be produced in three modes. The developer has CARA
+utility with coefficient $\rho$ and Normal beliefs $\theta \sim N(\mu, 1/\pi)$
+about her match with the language, so a payoff with mean $m$ and variance
+$\sigma^2$ is worth $m - \rho\sigma^2/2$ (Appendix A.1, derived by hand in
+`hand/`). The three certainty-equivalent surpluses are
 
-with $p$ weakly increasing, concave and twice differentiable, $\gamma > 0$, and
-one constraint that turns out to carry the whole result: $e \ge 0$.
+$$V^S = \omega + s\mu - \frac{\rho s^2}{2\pi} - b, \qquad
+  V^C = V^S + \gamma s - r^C,$$
+
+$$V^D = \omega + (1-\lambda)s\mu + \lambda a z(A) - \kappa(a,s) - r^D - b
+      - \frac{\rho}{2}\Big[\frac{(1-\lambda)^2 s^2}{\pi} + \sigma_D^2(a,s,A)\Big].$$
+
+Under menu $M_1 = \{S, C\}$ (before the agent) or $M_2 = \{S, C, D\}$ (after),
+the developer takes the best mode, $V^g = \max_{m \in M_g} V^m$, and the
+language is *active* when $Z^g = \mathbf 1[V^g \ge 0]$. Because every surplus is
+affine in $\omega$ with slope one, each mode has a threshold $T^m$ with
+$V^m = \omega - T^m$.
 
 ## The main result, with all its conditions
 
-Let $x^{*}$ be the **largest** maximiser of $p(x) - \gamma x$:
+Write $T^S = b - s\mu + \rho s^2/(2\pi)$, $T^C = T^S - (\gamma s - r^C)$,
+$T^1 = \min\{T^S, T^C\}$, and
 
-$$x^{*} = \max \arg\max_{x} \left[\, p(x) - \gamma x \,\right]$$
+$$T^D = b - (1-\lambda)s\mu - \lambda a z(A) + \kappa(a,s) + r^D
+      + \frac{\rho}{2}\Big[\frac{(1-\lambda)^2 s^2}{\pi} + \sigma_D^2(a,s,A)\Big].$$
 
-This requires a **regularity condition**, without which $x^{*}$ need not exist:
+**Assumption 1 (augmentation requires a foothold).** For an unfamiliar language,
+$\gamma s - r^C \le 0$; for a familiar one, $\gamma \bar s - r^C > 0$. Hence for an
+unfamiliar language $T^1 = T^S$: Generation 1 does not move the entry margin.
 
-$$\limsup_{x \to \infty} \frac{p(x)}{x} < \gamma$$
+**Assumption 2 (verification technology).** $\kappa_a < 0$, $\kappa_s \le 0$,
+$\partial\sigma_D^2/\partial a \le 0$, $\partial\sigma_D^2/\partial s \le 0$,
+$\partial\sigma_D^2/\partial A \le 0$.
 
-**Proposition 2.1.** Under those conditions,
+The **agentic threshold reduction** for an unfamiliar language is
+$B \equiv T^1 - T^D = T^S - T^D$, and differencing the thresholds gives
 
-$$e^{*}(s,a) = \left(x^{*} - s - a\right)_{+}, \qquad
-  p^{*}(s,a) = \max\left\{ p(x^{*}),\, p(s+a) \right\}$$
+$$B = \lambda\big[a z(A) - s\mu\big] - \kappa(a,s) - r^D
+    + \frac{\rho}{2}\Big[\frac{(2\lambda - \lambda^2)s^2}{\pi} - \sigma_D^2(a,s,A)\Big].$$
 
-*Intuition in one sentence:* the agent has a single target level of total input,
-tops it up with effort, and once skill plus AI already reach it he stops working.
+**Proposition 2 (Activation band).** *Consider an unfamiliar language satisfying
+Assumption 1. If $B > 0$, then*
 
-Two things worth noticing about the proof. It is a **case split** — interior
-versus corner — and contains **no differentiation at all**; and the largest-argmax
-tie-break is not decoration, it is what makes $e^{*}$ well defined when
-$p(x)-\gamma x$ has a flat maximum.
+$$Z^2 - Z^1 = \mathbf 1\big[\,T^D \le \omega < T^S\,\big].$$
 
-## Sections 3–5: stated, not derived
+Conditions, spelled out: (i) the language is unfamiliar, so Assumption 1 applies
+and $T^1 = T^S$; (ii) $B > 0$, i.e. $T^D < T^S$, so the band is nonempty;
+(iii) the CARA–Normal certainty-equivalent representation behind $V^S, V^C, V^D$;
+(iv) $\lambda \in (0,1]$, $\rho > 0$, $\pi > 0$. If the conditional CDF $F$ of
+$\omega$ is continuous, the probability that delegation activates the language is
+$F(T^S) - F(T^D)$, and expected language-count expansion is
+$\sum_k [F(T^1_k) - F(T^2_k)] \ge 0$ (Equation (9)).
 
-The three headline results — the deskilling paradox, the unreliability paradox
-and skill polarisation — use machinery well beyond Section 2: a continuous-time
-birth–death Markov chain and its steady state, Arrow–Pratt risk aversion applied
-to a *production* function with IARA/DARA driving the sign, and Bayesian updating
-over a binary signal. They are worth understanding; they are not worth trying to
-reproduce in a week. See `extra/tutorial-alz-completo.pdf` for the full walk.
+Two things the Lean check made explicit. The identity in Proposition 2 holds
+**without** $B > 0$ (when $B \le 0$ the band is empty and both sides are zero),
+so the premise only buys nonemptiness. And Proposition 3's "strictly increasing
+and concave" cumulative effect, stated on the domain $p^1 = 0 < p^2$, **fails
+at $p^2 = 1$**, where the effect is constant at $|U_i|$; the strict claims need
+$p^2 < 1$.
 
----
+What the result does *not* claim (Remark 1): the frontier is a *production*
+frontier, not a skill frontier. Adoption does not raise $s_{ik,t}$; the
+developer ships Rust by directing an agent, not by learning Rust.
+
+## Two papers, one phenomenon
+
+Aouad–Lykouris–Zhong (week 1) make AI a **perfectly substitutable input**,
+$x = s + e + a$, on the *intensive* margin of a task the worker already does:
+assistance crowds out effort, effort builds skill, hence deskilling. Quispe–Xu
+make agentic AI a **new production mode on the extensive margin**, with its own
+threshold that does not load on $s$: it adds options rather than replacing
+inputs, hence frontier expansion (Proposition 1 is literally "a larger menu").
+Same technology, opposite conclusions, and the difference is exactly whether AI
+enters *inside* the production function of an existing task or *beside* it as
+an alternative way to produce a task that was previously infeasible.
 
 ## What is in this repository
 
 | File | What it is |
 |---|---|
 | `README.md` | This page |
-| `prompts.md` | The full LLM conversation, unedited |
-| `extensions.md` | Which assumptions could be relaxed, and which are dead ends |
-| `hand/` | The derivation of Proposition 2.1, written out by hand |
-| `presentation.tex` / `.pdf` | The 5-minute Beamer deck |
-| `paper/` | The article itself |
-| `extra/` | Above the floor: a full tutorial of the paper and two lecture decks |
+| `prompts.md` | Raw prompts and answers: the Codex session (until the credits ran out) and the Claude Code session |
+| `hand/derivacion-a-mano.pdf` | Five notebook pages: the CARA–Normal certainty equivalent via the MGF, and the derivation of $V^S$, $V^C$, $V^D$ |
+| `presentation.tex` / `.pdf` | The 20-minute Beamer deck, including the required Lean slide |
+| `lean/` | The EconCSLib paper folder `papers/QX26AgenticDelegation/`, copied as generated after the run (15 Specs, 15 closed proofs, reports, audit stubs, `docs/RUN_LOG.md`, `docs/CHECK_FULL.log`) |
+| `analysis/` | `cumulative_effect.py` and its figure: the activation band of Proposition 2 and the $p^2 = 1$ saturation of Proposition 3 (slide 4) |
+| `paper/README.md` | Pointer to the article (the PDF itself is not committed) |
 
-## What is required
+## The Lean component in one paragraph
 
-Only four things. The rest of this repository is above the floor.
-
-1. **`README.md`** — one page: the question, the agent's problem, the main result
-   **with all its conditions**.
-2. **`prompts.md`** — your prompts and the answers, **raw**. Do not tidy them up:
-   the value is in seeing where the model went wrong.
-3. **`hand/`** — at least one photograph of something you derived by hand. Not the
-   whole paper: the one step you did not believe until you did it yourself.
-4. **`presentation.tex` / `.pdf`** — the 5-minute deck, source and compiled.
-
-Deadline is **Tuesday 22:00**, work merged into `main` through a pull request,
-and the repository URL posted as a comment on that week's issue.
-
-## About `hand/`
-
-`hand/prop-2-1-derivacion-a-mano.pdf` is three phone photos of a notebook page.
-That is exactly the standard: crooked, with crossings-out, no transcription. What
-it shows is the first-order condition and the interior-versus-corner split written
-out step by step — the part I did not want to take on trust.
-
-## About the LLM conversation
-
-`prompts.md` is the export of the session that produced the tutorial in `extra/`.
-Read it for what it gets wrong as much as for what it gets right. The episode
-worth studying is on slide 4 of the presentation: asked for "the most natural
-extension", the model confidently proposed relaxing the linear cost — which the
-authors had already done in Appendix D. It took opening the appendix to find out.
+Fifteen source-facing statements (Equations (4), (5), (6), (7), (18); the
+ability comparative static; Propositions 1–5) were pinned to the v2 PDF in an
+EconCSLib statement spec, scaffolded with `paper_contribution.py new`, and
+proved with no `sorry`. `lake build QX26AgenticDelegation` completes; `check
+--fast` exits 0; the full `check` passes the build and status lanes and stops
+at the conclusion-provenance audit, which needs the LLM-as-judge sidecars that
+were not run (`lean/docs/CHECK_FULL.log`). Status: **partially formalized**,
+because the two strict Proposition 3 rows carry the added restriction
+$p^2 < 1$ and the semantic audits are pending. `lean/FINAL_VALIDATION_REPORT.md`
+has the full ledger.
