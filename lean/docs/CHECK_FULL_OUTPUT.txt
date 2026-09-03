@@ -1,0 +1,86 @@
++ lake build QX26AgenticDelegation
+⚠ [3437/3688] Replayed EconCSLib.Foundations.Probability.FiniteExpectation
+warning: EconCSLib/Foundations/Probability/FiniteExpectation.lean:1308:26: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3871/3957] Replayed EconCSLib.Foundations.Probability.FiniteHorizonGPSConstantRateProjection
+warning: EconCSLib/Foundations/Probability/FiniteHorizonGPSConstantRateProjection.lean:607:23: This simp argument is unused:
+  List.append_assoc
+
+Hint: Omit it from the simp argument list.
+  simp [finiteGPSConstantRateProjectionSegments, earlierSegments, b̵l̵o̵c̵k̵S̵e̵g̵m̵e̵n̵t̵s̵,̵ ̵L̵i̵s̵t̵.̵a̵p̵p̵e̵n̵d̵_̵a̵s̵s̵o̵c̵]̵b̲l̲o̲c̲k̲S̲e̲g̲m̲e̲n̲t̲s̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3883/3957] Replayed EconCSLib.Foundations.Probability.FiniteHorizonGPSFCFSFixedScriptMeasurability
+warning: EconCSLib/Foundations/Probability/FiniteHorizonGPSFCFSFixedScriptMeasurability.lean:364:16: This simp argument is unused:
+  hactive
+
+Hint: Omit it from the simp argument list.
+  simp [̵h̵a̵c̵t̵i̵v̵e̵,̵ ̵i̵h̵]̵[̲i̲h̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3884/3957] Replayed EconCSLib.Foundations.Probability.FiniteHorizonGPSFCFSEmptyFenceFixedScriptMeasurability
+warning: EconCSLib/Foundations/Probability/FiniteHorizonGPSFCFSEmptyFenceFixedScriptMeasurability.lean:257:55: This simp argument is unused:
+  batchWork
+
+Hint: Omit it from the simp argument list.
+  simp [finiteGPSFCFSEmptyFenceShapeMatches, b̵a̵t̵c̵h̵W̵o̵r̵k̵,̵ ̵duration, nextWork, nextTime, remainingDelay,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲hactive]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: EconCSLib/Foundations/Probability/FiniteHorizonGPSFCFSEmptyFenceFixedScriptMeasurability.lean:257:66: This simp argument is unused:
+  duration
+
+Hint: Omit it from the simp argument list.
+  simp [finiteGPSFCFSEmptyFenceShapeMatches, batchWork, d̵u̵r̵a̵t̵i̵o̵n̵,̵nextWork, nextTime,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲remainingDelay, hactive]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: EconCSLib/Foundations/Probability/FiniteHorizonGPSFCFSEmptyFenceFixedScriptMeasurability.lean:258:14: This simp argument is unused:
+  nextWork
+
+Hint: Omit it from the simp argument list.
+  simp [finiteGPSFCFSEmptyFenceShapeMatches, batchWork, duration, n̵e̵x̵t̵W̵o̵r̵k̵,̵ ̵nextTime,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲remainingDelay, hactive]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: EconCSLib/Foundations/Probability/FiniteHorizonGPSFCFSEmptyFenceFixedScriptMeasurability.lean:258:24: This simp argument is unused:
+  nextTime
+
+Hint: Omit it from the simp argument list.
+  simp [finiteGPSFCFSEmptyFenceShapeMatches, batchWork, duration, nextWork,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲n̵e̵x̵t̵T̵i̵m̵e̵,̵ ̵remainingDelay, hactive]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: EconCSLib/Foundations/Probability/FiniteHorizonGPSFCFSEmptyFenceFixedScriptMeasurability.lean:258:34: This simp argument is unused:
+  remainingDelay
+
+Hint: Omit it from the simp argument list.
+  simp [finiteGPSFCFSEmptyFenceShapeMatches, batchWork, duration, nextWork, nextTime,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲r̵e̵m̵a̵i̵n̵i̵n̵g̵D̵e̵l̵a̵y̵,̵ ̵hactive]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3976/4000] Replayed EconCSLib.Markets.Matching.DeferredAcceptance
+warning: EconCSLib/Markets/Matching/DeferredAcceptance.lean:502:46: This simp argument is unused:
+  w_exists
+
+Hint: Omit it from the simp argument list.
+  simp [daStepByMan, daStep, hactive, hact, w_̵e̵x̵i̵s̵t̵s̵, w̵,̵ ̵accepts, hacc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: EconCSLib/Markets/Matching/DeferredAcceptance.lean:503:46: This simp argument is unused:
+  w_exists
+
+Hint: Omit it from the simp argument list.
+  simp [daStepByMan, daStep, hactive, hact, w_̵e̵x̵i̵s̵t̵s̵, w̵,̵ ̵accepts, hacc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3998/4000] Replayed QX26AgenticDelegation.ProofInterface
+warning: papers/QX26AgenticDelegation/ProofInterface.lean:93:2: Try this: intro s μ prec ρ lam z rD κ σ hρ hlam hz hκ hσ a a' haa'
+Build completed successfully (4000 jobs).
++ /usr/bin/python3 scripts/sync_paper_status.py --paper QX26AgenticDelegation --check
+paper-local generated status check passed for `QX26AgenticDelegation`
++ /usr/bin/python3 scripts/audit_conclusion_provenance.py --paper QX26AgenticDelegation
+[ERROR] QX26AgenticDelegation <audit>.<helper>: could not acquire a current immutable source-record evidence transaction: evidence context has no exact source-record payload
+Conclusion-provenance audit: 1 error(s) across 1 paper(s)
+CHECK_FULL_EXIT=1

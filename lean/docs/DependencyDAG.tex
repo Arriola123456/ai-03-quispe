@@ -1,0 +1,136 @@
+\documentclass[tikz,border=10pt]{standalone}
+\input{../../../docs/tikz/dag_preamble.tex}
+
+\begin{document}
+\begin{tikzpicture}[
+  x=1cm,
+  y=1cm,
+  every node/.append style={outer sep=4pt}
+]
+
+\dagPaperMetadata
+  {Agentic Delegation and the Language Frontier of Software Developers}
+  {Quispe, Xu}
+  {arXiv:2605.25438v2}
+  {2026}
+  {https://arxiv.org/abs/2605.25438v2}
+
+\dagPaperLegendRightOfMetadata{
+\node[dag_result, dag_template_legend] (legRes) at (0,0) {checked named\\result};
+\node[dag_lemma, dag_template_legend] (legLem) at (4.0,0) {checked displayed\\equation};
+\node[dag_model, dag_template_legend] (legDef) at (8.0,0) {checked source\\definition};
+\node[dag_partial, dag_template_legend] (legPart) at (12.0,0) {added non-source\\restriction};
+\node[dag_template_note, dag_template_legend, text width=2.72cm]
+  (legNote) at (16.0,0) {extension beyond\\the printed claim};
+}
+\daglegend{(legRes)(legLem)(legDef)(legPart)(legNote)}{Legend}
+
+\begin{dagPaperBody}
+
+\node[font=\sffamily\bfseries\Large, align=center, text width=22cm]
+  (Class) at (6,0.6) {
+  Status: partially formalized --- all fifteen selected statements proved;\\
+  Proposition 3's strict claims need the added endpoint restriction $p^2<1$
+};
+
+\node[dag_model, text width=6.2cm] (Model) at (-4,-2.2) {
+  \textbf{Model, Section 4.1} \\
+  modes $S$, $C$, $D$ with CE surpluses (1)--(3);\\
+  menus $M_1=\{S,C\}\subset M_2=\{S,C,D\}$;\\
+  $Z^g=\mathbf 1[\max_{m\in M_g}V^m\ge 0]$
+};
+
+\node[dag_lemma, text width=4.6cm] (Eq4) at (3,-2.2) {
+  \textbf{Equation (4)} \\
+  $V^S\ge 0 \iff \omega\ge T^S$
+};
+
+\node[dag_lemma, text width=4.6cm] (Eq5) at (8.5,-2.2) {
+  \textbf{Equation (5)} \\
+  $T^1=T^S-\max\{0,\gamma s-r^C\}$
+};
+
+\node[dag_lemma, text width=4.6cm] (Eq6) at (14,-2.2) {
+  \textbf{Equation (6)} \\
+  $V^D\ge 0 \iff \omega\ge T^D$
+};
+
+\node[dag_lemma, text width=5.4cm] (Eq18) at (3,-6.0) {
+  \textbf{Equation (18), Assumption 1} \\
+  $\gamma s-r^C\le 0 \Rightarrow T^1=T^S$
+};
+
+\node[dag_lemma, text width=5.4cm] (Eq7) at (9.5,-6.0) {
+  \textbf{Equation (7)} \\
+  $B=\lambda[az-s\mu]-\kappa-r^D$\\
+  $\;+\frac{\rho}{2}[(2\lambda-\lambda^2)s^2/\pi-\sigma_D^2]$
+};
+
+\node[dag_result, text width=5.4cm] (CompStat) at (15.5,-6.0) {
+  \textbf{Comparative static after (7)} \\
+  $B$ monotone in $a$ under Assumption 2\\
+  (added $\rho,\lambda,z\ge 0$)
+};
+
+\node[dag_result, text width=5.4cm] (Prop1) at (-4,-6.0) {
+  \textbf{Proposition 1} \\
+  $N^2_{it}\ge N^1_{it}$ path by path
+};
+
+\node[dag_result, text width=6.0cm] (Prop2) at (3,-10.0) {
+  \textbf{Proposition 2} \\
+  $Z^2-Z^1=\mathbf 1[T^D\le\omega<T^S]$\\
+  under Assumption 1 and $B>0$
+};
+
+\node[dag_template_note, text width=5.2cm] (Ext2) at (9.5,-10.0) {
+  \textbf{Extension} \\
+  the band identity holds without $B>0$\\
+  (band empty, both sides zero)
+};
+
+\node[dag_result, text width=5.4cm] (Prop3a) at (-4,-10.0) {
+  \textbf{Proposition 3, Equation (10)} \\
+  $\Delta C_i(s)\ge 0$ when $p^1\le p^2\le 1$
+};
+
+\node[dag_partial, text width=6.4cm] (Prop3b) at (-4,-14.0) {
+  \textbf{Proposition 3, closed frontier} \\
+  strictly increasing and strictly concave\\
+  \emph{proved with added $0<p^2<1$, $U_i\neq\emptyset$};\\
+  at $p^2=1$: $\Delta C_i(s)=|U_i|$ for all $s$
+};
+
+\node[dag_result, text width=5.4cm] (Prop4) at (3,-14.0) {
+  \textbf{Proposition 4, Equation (22)} \\
+  $\sum_{k\in U_i}p=|U_i|\,p$; increasing in\\
+  $U_i$ and in ability
+};
+
+\node[dag_result, text width=5.4cm] (Prop5) at (9.5,-14.0) {
+  \textbf{Proposition 5} \\
+  weak repository expansion;\\
+  strict with one repository in the band
+};
+
+\draw[dag_arrow] (Model) -- (Eq4);
+\draw[dag_arrow] (Model) -- (Eq5);
+\draw[dag_arrow] (Model) -- (Eq6);
+\draw[dag_arrow] (Model) -- (Prop1);
+\draw[dag_arrow] (Eq5) -- (Eq18);
+\draw[dag_arrow] (Eq4) -- (Eq7);
+\draw[dag_arrow] (Eq6) -- (Eq7);
+\draw[dag_arrow] (Eq18) -- (Eq7);
+\draw[dag_arrow] (Eq7) -- (CompStat);
+\draw[dag_arrow] (Eq4) -- (Prop2);
+\draw[dag_arrow] (Eq18) -- (Prop2);
+\draw[dag_arrow] (Eq6) -- (Prop2);
+\draw[dag_dashed_arrow] (Prop2) -- (Ext2);
+\draw[dag_arrow] (Prop3a) -- (Prop3b);
+
+\node[font=\sffamily\bfseries\large, align=center] at (6,-17.0)
+  {Proof endpoints: \texttt{ProofInterface.lean}; model and lemmas: \texttt{MainTheorems.lean}};
+
+\end{dagPaperBody}
+\end{tikzpicture}
+\end{document}

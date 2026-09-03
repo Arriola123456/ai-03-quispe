@@ -1,0 +1,306 @@
+{
+  "schema": 1,
+  "paper": "QX26AgenticDelegation",
+  "acceptance_credential": false,
+  "future_paper_intake_only": true,
+  "state": "draft",
+  "inventory_scope": "complete named theoretical source surface",
+  "inventory_complete": false,
+  "source_item_identity": "source-location+normalized-statement-sha256-v1",
+  "source_artifact_path": "papers/QX26AgenticDelegation/source-audited.pdf",
+  "source_artifact_sha256": "cddc048711c43022d5fd01b995bfb1114c728c8c879b809b5fdc354a391d3c35",
+  "source_version": "arXiv v2, 2026-07-07",
+  "source_text_artifact": {
+    "schema": 1,
+    "path": "papers/QX26AgenticDelegation/source.txt",
+    "sha256": "57092bea554d7047cbf45c3437521dd9809b632f5fd2c710c2fd0e6d783b1bb5",
+    "normalization": "utf8-lf-v1",
+    "extraction": {
+      "schema": 1,
+      "source_artifact_path": "papers/QX26AgenticDelegation/source-audited.pdf",
+      "source_artifact_sha256": "cddc048711c43022d5fd01b995bfb1114c728c8c879b809b5fdc354a391d3c35",
+      "tool": "pdftotext",
+      "options": []
+    }
+  },
+  "items": [
+    {
+      "source_item": "Equation (4): solo activation threshold",
+      "source_location": "Section 4.2, page 12, Equation (4); Appendix A.2, page 60, Equation (16)",
+      "source_statement_sha256": "c56905d1720e299b759c561a73be449f4e2f11cd1448e638eadbae52c0f11a05",
+      "source_kind": "claim",
+      "spec_declaration": "paper_equation_4_solo_thresholdSpec",
+      "proof_declaration": "paper_equation_4_solo_threshold",
+      "dependency_order": 1,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Equation (5): effective Generation-1 threshold",
+      "source_location": "Section 4.2, page 12, Equation (5); Appendix A.2, page 61, Equations (17)-(18)",
+      "source_statement_sha256": "496443daa16d15aaf087c3282d5812e0565db86855634f1f5c06c585ee77eaee",
+      "source_kind": "claim",
+      "spec_declaration": "paper_equation_5_generation1_thresholdSpec",
+      "proof_declaration": "paper_equation_5_generation1_threshold",
+      "dependency_order": 2,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Assumption 1 consequence: augmentation does not move the unfamiliar-language entry margin (T^1 = T^S)",
+      "source_location": "Section 4.2, page 12, text after Equation (5); Appendix A.2, page 61, Equation (18)",
+      "source_statement_sha256": "2c32737f311d12ea47cbcfe4f0898656988ebc489f06f31244bf93389d457ea1",
+      "source_kind": "claim",
+      "spec_declaration": "paper_equation_18_unfamiliar_no_augmentationSpec",
+      "proof_declaration": "paper_equation_18_unfamiliar_no_augmentation",
+      "dependency_order": 3,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Equation (6): delegation activation threshold",
+      "source_location": "Section 4.2, page 13, Equation (6); Appendix A.2, page 61, Equation (19)",
+      "source_statement_sha256": "7840d0a3f1b776faceec346f77730832298d0ac5b92eaa12a2bfd25ce6bc595a",
+      "source_kind": "claim",
+      "spec_declaration": "paper_equation_6_delegation_thresholdSpec",
+      "proof_declaration": "paper_equation_6_delegation_threshold",
+      "dependency_order": 4,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Equation (7): agentic threshold reduction B for an unfamiliar language",
+      "source_location": "Section 4.2, page 13, Equation (7); Appendix A.2, page 61, Equation (20)",
+      "source_statement_sha256": "321dddee21d3c118649fa7830847530da66cf3cff47418343234923f5cc20c2a",
+      "source_kind": "claim",
+      "spec_declaration": "paper_equation_7_agentic_threshold_reductionSpec",
+      "proof_declaration": "paper_equation_7_agentic_threshold_reduction",
+      "dependency_order": 5,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Comparative statics of B: the reduction is larger for higher-ability developers (Assumption 2)",
+      "source_location": "Section 4.2, page 13, text after Equation (7); Assumption 2, page 12",
+      "source_statement_sha256": "cc80239592ef9c1a54c3f790c34905fe9ceabed8e8e35dd36bb96e8e060b35c2",
+      "source_kind": "claim",
+      "spec_declaration": "paper_reduction_increasing_in_abilitySpec",
+      "proof_declaration": "paper_reduction_increasing_in_ability",
+      "dependency_order": 6,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 1 (Frontier expansion)",
+      "source_location": "Section 4.2, page 13, Proposition 1; proof in Appendix A.3, pages 61-62, Equation (21)",
+      "source_statement_sha256": "10fbbe13e408990063561081f522292f7740a0ee841ce4ee02cbb2017bef5ce1",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_1_frontier_expansionSpec",
+      "proof_declaration": "paper_proposition_1_frontier_expansion",
+      "dependency_order": 7,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 2 (Activation band for unfamiliar languages), Equation (8)",
+      "source_location": "Section 4.2, page 13, Proposition 2, Equation (8); proof in Appendix A.4, page 62",
+      "source_statement_sha256": "b9f27acf0a14d958eaf747ed8198ad3ee43cb71f15e11a5c411ef94b654fd255",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_2_activation_bandSpec",
+      "proof_declaration": "paper_proposition_2_activation_band",
+      "dependency_order": 8,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 3 (Dynamic cumulative-language effect), Equation (10): nonnegativity",
+      "source_location": "Section 4.3, page 15, Proposition 3, Equation (10); proof in Appendix A.6, page 63, Equations (24)-(25)",
+      "source_statement_sha256": "423a8de3acb678378cd0a072d4bca7b493f1106dccb0cabc66037541af608382",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_3_cumulative_effect_nonnegSpec",
+      "proof_declaration": "paper_proposition_3_cumulative_effect_nonneg",
+      "dependency_order": 9,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 3 (Dynamic cumulative-language effect): strict increase in the closed-frontier benchmark",
+      "source_location": "Section 4.3, page 15, Proposition 3; Appendix A.6, page 64, Equation (26)",
+      "source_statement_sha256": "68716ed88071aa5c8cb3f7f035c9b2cc203b0a5f22972d7cb71a88ed996376a9",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_3_closed_frontier_strictly_increasingSpec",
+      "proof_declaration": "paper_proposition_3_closed_frontier_strictly_increasing",
+      "dependency_order": 10,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 3 (Dynamic cumulative-language effect): concavity in the closed-frontier benchmark",
+      "source_location": "Section 4.3, page 15, Proposition 3; Appendix A.6, page 64, Equation (26)",
+      "source_statement_sha256": "88840e8cffa4f371b17e6f84caf0806c454497f39df9302039312565cc7e6a1f",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_3_closed_frontier_concaveSpec",
+      "proof_declaration": "paper_proposition_3_closed_frontier_concave",
+      "dependency_order": 11,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 4 (Specialist and ability heterogeneity), Equation (22): expected expansion identity and monotonicity in the candidate stock",
+      "source_location": "Appendix A.5, pages 62-63, Proposition 4, Equations (22)-(23)",
+      "source_statement_sha256": "8d23375ca077f9192b859b145a465bdeba32cbf65400a2e15f392be58c30e2ee",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_4_expected_expansionSpec",
+      "proof_declaration": "paper_proposition_4_expected_expansion",
+      "dependency_order": 12,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 4 (Specialist and ability heterogeneity): monotonicity in general ability",
+      "source_location": "Appendix A.5, pages 62-63, Proposition 4 and its proof",
+      "source_statement_sha256": "ea97fa9a7f5823b4353191e361ef68c8bb46f8246c5e4ddc414ed3eeebeefef8",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_4_increasing_in_abilitySpec",
+      "proof_declaration": "paper_proposition_4_increasing_in_ability",
+      "dependency_order": 13,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 5 (Repository expansion): weak expansion",
+      "source_location": "Appendix A.8, page 64, Proposition 5 and its proof",
+      "source_statement_sha256": "9fba12ac5613a70a00f4a47b031c85294a997bbff16222e406bcfd83cbe78dd5",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_5_repository_expansionSpec",
+      "proof_declaration": "paper_proposition_5_repository_expansion",
+      "dependency_order": 14,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    },
+    {
+      "source_item": "Proposition 5 (Repository expansion): strict expansion",
+      "source_location": "Appendix A.8, page 64, Proposition 5 and its proof",
+      "source_statement_sha256": "3d14b075fdd3a0f3c70b4e8da112e1f3071772835bb95501886b5b2eea631ef9",
+      "source_kind": "proposition",
+      "spec_declaration": "paper_proposition_5_repository_expansion_strictSpec",
+      "proof_declaration": "paper_proposition_5_repository_expansion_strict",
+      "dependency_order": 15,
+      "depends_on_source_items": [],
+      "owner": "unassigned",
+      "source_atoms": [],
+      "acceptance_conditions": [
+        "all exact source atoms are byte-pinned and semantically complete",
+        "the transparent Spec is equivalent to the full source target",
+        "every visible premise has source or checked derivation provenance",
+        "the proof closes without paper-local placeholders"
+      ]
+    }
+  ],
+  "seal_requirements": {
+    "state": "sealed",
+    "inventory_complete": true,
+    "every_item_has_owner": true,
+    "dependency_order_is_total": true,
+    "every_source_atom_has_locator_exact_byte_slice_quote_and_sha256": true,
+    "pdf_atoms_use_pinned_normalized_source_text_receipt": true
+  }
+}
