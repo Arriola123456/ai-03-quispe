@@ -18,3 +18,6 @@ DNI*
 
 # The article itself: third-party PDF, fetch it from arXiv
 paper/*.pdf
+
+# Beamer
+*.vrb
